@@ -1,4 +1,4 @@
-const primary = '#FF385C';
+const primary = '#6366F1';
 const secondary = '#00A699';
 
 const darkPalette = {

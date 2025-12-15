@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
 import { memo } from "react";
-import { Pressable, ScrollView, Share, StyleSheet, View } from "react-native";
+import { ScrollView, Share, StyleSheet, View } from "react-native";
 
 import { GlassCard } from "@/components/GlassCard";
 import { ScreenBackground } from "@/components/ScreenBackground";
@@ -95,7 +95,7 @@ export default function TipsScreen() {
           <TipBlock title={t("tipBakingTitle")} body={t("tipBakingBody")} />
         </GlassCard>
 
-        <GlassCard style={{ marginTop: spacing.xl }}>
+        {/* <GlassCard style={{ marginTop: spacing.xl }}>
           <Typography variant="title" style={{ marginBottom: spacing.md }}>
             {t("tipActionsTitle")}
           </Typography>
@@ -146,7 +146,7 @@ export default function TipsScreen() {
               />
             </Pressable>
           </View>
-        </GlassCard>
+        </GlassCard> */}
 
         <GlassCard style={{ marginTop: spacing.xl }}>
           <Typography variant="title">{t("moreInfoTitle")}</Typography>
