@@ -35,6 +35,13 @@ export type PizzaResult = PizzaInput & {
   name: string;
 };
 
+export type SavedRecipe = {
+  id: string;
+  title: string;
+  createdAt: number;
+  result: PizzaResult;
+};
+
 const roundFirstDecimal = (n: number) => Math.round(parseFloat(n.toFixed(2)) * 10) / 10;
 const totalWeight = (pizza: PizzaInput) => pizza.number * pizza.gramsPerPizza;
 
@@ -116,6 +123,9 @@ export const defaultPizzaInput: PizzaInput = {
   gramsPerPizza: recipes.neapolitan.gramsPerPizza,
   yeastType: recipes.neapolitan.yeastType,
 };
+
+export const FORM_STORAGE_KEY = '@pizza-form-v1';
+export const SAVED_RECIPES_KEY = '@pizza-saved-v1';
 
 export function calculatePizza(input: PizzaInput): PizzaResult {
   const recipe = recipes[input.style];

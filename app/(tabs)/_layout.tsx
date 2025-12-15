@@ -28,6 +28,13 @@ export default function TabLayout() {
         })}
         <Label>{t('tabTips')}</Label>
       </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="recipes">
+        {Platform.select({
+          ios: <Icon sf={{ default: 'bookmark', selected: 'bookmark.fill' }} />,
+          default: <VectorIcon family={Ionicons} name="bookmark-outline" />,
+        })}
+        <Label>{t('savedRecipes')}</Label>
+      </NativeTabs.Trigger>
     </NativeTabs>
   );
 }

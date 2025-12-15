@@ -4,6 +4,7 @@ import * as Haptics from 'expo-haptics';
 import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 import Colors from '@/constants/Colors';
 import { radius, spacing, typography } from '@/constants/theme';
@@ -14,7 +15,9 @@ import { ScreenBackground } from '@/components/ScreenBackground';
 import { SegmentedControl } from '@/components/SegmentedControl';
 import { Typography } from '@/components/Typography';
 import {
+  FORM_STORAGE_KEY,
   PizzaStyle,
+  SAVED_RECIPES_KEY,
   YeastType,
   calculatePizza,
   defaultPizzaInput,
@@ -31,7 +34,6 @@ type FormState = {
 
 const styleOptions: PizzaStyle[] = ['neapolitan', 'new-york', 'sicilian', 'pan'];
 const yeastOptions: YeastType[] = ['fresh', 'dry'];
-const STORAGE_KEY = '@pizza-form-v1';
 
 export default function CalculatorScreen() {
   const { t, language } = useTranslation();
@@ -44,39 +46,45 @@ export default function CalculatorScreen() {
   });
   const [hydrated, setHydrated] = useState(false);
 
-  useEffect(() => {
-    const hydrate = async () => {
-      try {
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
-        if (!raw) {
-          setHydrated(true);
-          return;
-        }
-        const parsed = JSON.parse(raw) as Partial<FormState>;
-        const style = styleOptions.includes(parsed.style as PizzaStyle)
-          ? (parsed.style as PizzaStyle)
-          : defaultPizzaInput.style;
-        const yeastType = yeastOptions.includes(parsed.yeastType as YeastType)
-          ? (parsed.yeastType as YeastType)
-          : defaultPizzaInput.yeastType;
-        const number = parsed.number && /^\d+$/.test(parsed.number) ? parsed.number : `${defaultPizzaInput.number}`;
-        const gramsPerPizza =
-          parsed.gramsPerPizza && /^\d+$/.test(parsed.gramsPerPizza)
-            ? parsed.gramsPerPizza
-            : `${defaultPizzaInput.gramsPerPizza}`;
-        setForm({ style, yeastType, number, gramsPerPizza });
-      } catch (_) {
-        // ignore hydration errors
-      } finally {
-        setHydrated(true);
-      }
-    };
-    hydrate();
-  }, []);
+  useFocusEffect(
+    useMemo(
+      () => () => {
+        const hydrate = async () => {
+          try {
+            const raw = await AsyncStorage.getItem(FORM_STORAGE_KEY);
+            if (!raw) {
+              setHydrated(true);
+              return;
+            }
+            const parsed = JSON.parse(raw) as Partial<FormState>;
+            const style = styleOptions.includes(parsed.style as PizzaStyle)
+              ? (parsed.style as PizzaStyle)
+              : defaultPizzaInput.style;
+            const yeastType = yeastOptions.includes(parsed.yeastType as YeastType)
+              ? (parsed.yeastType as YeastType)
+              : defaultPizzaInput.yeastType;
+            const number =
+              parsed.number && /^\d+$/.test(parsed.number) ? parsed.number : `${defaultPizzaInput.number}`;
+            const gramsPerPizza =
+              parsed.gramsPerPizza && /^\d+$/.test(parsed.gramsPerPizza)
+                ? parsed.gramsPerPizza
+                : `${defaultPizzaInput.gramsPerPizza}`;
+            setForm({ style, yeastType, number, gramsPerPizza });
+          } catch (_) {
+            // ignore hydration errors
+          } finally {
+            setHydrated(true);
+          }
+        };
+        hydrate();
+      },
+      []
+    )
+  );
 
   useEffect(() => {
     if (!hydrated) return;
-    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(form)).catch(() => undefined);
+    AsyncStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(form)).catch(() => undefined);
   }, [form, hydrated]);
 
   const parsed = {
@@ -143,6 +151,25 @@ export default function CalculatorScreen() {
   const setYeast = async (value: YeastType) => {
     await Haptics.selectionAsync();
     setForm((prev) => ({ ...prev, yeastType: value }));
+  };
+
+  const saveRecipe = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    const payload = calculatePizza(parsed);
+    const entry = {
+      id: `${Date.now()}`,
+      title: `${t(`style_${payload.style.replace('-', '_')}`)} • ${parsed.number}×${parsed.gramsPerPizza}g`,
+      createdAt: Date.now(),
+      result: payload,
+    };
+    try {
+      const raw = await AsyncStorage.getItem(SAVED_RECIPES_KEY);
+      const list = raw ? JSON.parse(raw) : [];
+      list.unshift(entry);
+      await AsyncStorage.setItem(SAVED_RECIPES_KEY, JSON.stringify(list.slice(0, 30)));
+    } catch (_) {
+      // ignore
+    }
   };
 
   return (
@@ -257,6 +284,16 @@ export default function CalculatorScreen() {
               ]}>
               <Typography variant="button" color="#0A1024">
                 {t('share')}
+              </Typography>
+            </Pressable>
+            <Pressable
+              onPress={saveRecipe}
+              style={({ pressed }) => [
+                styles.secondaryButton,
+                { opacity: pressed ? 0.7 : 1, borderColor: Colors.light.tint },
+              ]}>
+              <Typography variant="button" color={Colors.light.tint}>
+                {t('save')}
               </Typography>
             </Pressable>
           </View>
