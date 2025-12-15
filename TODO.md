@@ -59,3 +59,14 @@
 - [x] Odebrat nepoužité dependency a skripty.
 - [x] Rychlý performance check (memoizace CTA/řádků).
 - [x] Některé tipy jsou pouze anglicky. Mají se taky překládat
+
+## UI/UX redesign (next)
+- [ ] Nový vizuální směr: výraznější kontrast, lepší spacing, card stack s gradienty/odlesky, sjednocené okraje (safe area + notch).
+- [ ] Vstupy čísel: steppery (+/-) s haptikou, slider pro hydrataci (45–90 %), validace a inline helpery.
+- [ ] Výběry styl/droždí/počet pizz: fullscreen/bottom-sheet selektory s ikonami a popisy; možnost rychlých presetů (S/M/L váhy, 2–8 pizz).
+- [ ] Bottom actions: lepší CTA bar (sticky, glass) pro Sdílet/Uložit/Reset s ikonami a stavy.
+- [ ] Layout kalkulačky: dvousloupcové karty na velkých displejích, přehlednější blok Souhrn + Ingredience.
+- [ ] Mikrointerakce: animace přepnutí stylu (highlight na kartě), loader při ukládání, haptika u stepperů/přepínačů.
+- [ ] Přehled uložených receptů: karty s tagy (styl, hydratace, droždí), swipe to delete, better empty state.
+- [ ] Tipy: vizuálně oddělené bloky (ikony, badge), odkazy/CTA tlačítka s ikonami.
+- [ ] Nastavení: zjednodušené přepínače (toggle/selekty) a zobrazení aktuálního jazyka/motivu.

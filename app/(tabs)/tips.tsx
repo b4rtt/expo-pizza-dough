@@ -152,7 +152,9 @@ export default function TipsScreen() {
           <Typography variant="title">{t("moreInfoTitle")}</Typography>
           {getInfoSections(language === "cs" ? "cs" : "en").map((section) => (
             <View key={section.title} style={styles.infoBlock}>
-              <Typography variant="subtitle">{section.title}</Typography>
+              <Typography variant="subtitle">
+                {section.emoji} {section.title}
+              </Typography>
               <Typography variant="body" color={colors.muted}>
                 {section.body}
               </Typography>
