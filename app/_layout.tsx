@@ -6,8 +6,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useMemo } from 'react';
 import 'react-native-reanimated';
 
-import Colors from '@/constants/Colors';
 import { LocalizationProvider } from '@/providers/LocalizationProvider';
+import { ThemeProvider as AppThemeProvider, useThemeColors } from '@/providers/ThemeProvider';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -58,6 +58,7 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const { colors } = useThemeColors();
   const navTheme = useMemo(
     () => ({
       ...DefaultTheme,
@@ -65,30 +66,32 @@ function RootLayoutNav() {
         ...DefaultTheme.colors,
         background: 'transparent',
         card: 'transparent',
-        text: Colors.light.text,
+        text: colors.text,
         border: 'transparent',
-        primary: Colors.light.tint,
+        primary: colors.tint,
       },
     }),
-    []
+    [colors]
   );
 
   return (
-    <LocalizationProvider>
-      <ThemeProvider value={navTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="settings"
-            options={{
-              presentation: 'modal',
-              headerTitle: '',
-              headerTransparent: true,
-              headerTintColor: Colors.light.text,
-            }}
-          />
-        </Stack>
-      </ThemeProvider>
-    </LocalizationProvider>
+    <AppThemeProvider>
+      <LocalizationProvider>
+        <ThemeProvider value={navTheme}>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="settings"
+              options={{
+                presentation: 'modal',
+                headerTitle: '',
+                headerTransparent: true,
+                headerTintColor: colors.text,
+              }}
+            />
+          </Stack>
+        </ThemeProvider>
+      </LocalizationProvider>
+    </AppThemeProvider>
   );
 }

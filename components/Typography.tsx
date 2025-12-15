@@ -1,6 +1,6 @@
 import { Text, TextProps } from 'react-native';
 
-import Colors from '@/constants/Colors';
+import { useThemeColors } from '@/providers/ThemeProvider';
 import { typography } from '@/constants/theme';
 
 type Variant = 'display' | 'title' | 'subtitle' | 'body' | 'label' | 'button';
@@ -20,13 +20,14 @@ const baseStyles: Record<Variant, { fontFamily: string; fontSize: number; lineHe
 };
 
 export function Typography({ variant = 'body', color, style, children, ...rest }: Props) {
+  const { colors } = useThemeColors();
   const base = baseStyles[variant];
   return (
     <Text
       {...rest}
       style={[
         {
-          color: color ?? Colors.light.text,
+          color: color ?? colors.text,
           ...base,
         },
         style,

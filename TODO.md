@@ -36,6 +36,8 @@
 - [x] Přidat tlačítko „Reset kalkulačky“ a „Sdílet recept“.
 - [x] Přidat možnost uložit si recept, přidat novou záložku, kde budou uložené recepty.
 - [ ] Ukládání receptu by mělo mít možnost recept pojmenovat
+- [ ] V INFO.md jsou nějaké další texty a info. Přidáme to do Tipů
+- [ ] Udělej variabilní i hydratci (v procentech)
 
 ## Nastavení / další
 

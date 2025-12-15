@@ -1,8 +1,8 @@
 import { forwardRef } from 'react';
 import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
 
-import Colors from '@/constants/Colors';
 import { radius, spacing, typography } from '@/constants/theme';
+import { useThemeColors } from '@/providers/ThemeProvider';
 import { Typography } from './Typography';
 
 type Props = TextInputProps & {
@@ -12,14 +12,15 @@ type Props = TextInputProps & {
 };
 
 export const Field = forwardRef<TextInput, Props>(({ label, suffix, helper, style, ...rest }, ref) => {
+  const { colors } = useThemeColors();
   return (
     <View style={styles.wrapper}>
       <View style={styles.labelRow}>
-        <Typography variant="label" color={Colors.light.muted}>
+        <Typography variant="label" color={colors.muted}>
           {label}
         </Typography>
         {helper ? (
-          <Typography variant="label" color={Colors.light.muted}>
+          <Typography variant="label" color={colors.muted}>
             {helper}
           </Typography>
         ) : null}
@@ -28,11 +29,11 @@ export const Field = forwardRef<TextInput, Props>(({ label, suffix, helper, styl
         <TextInput
           ref={ref}
           style={[styles.input, style]}
-          placeholderTextColor={Colors.light.muted}
+          placeholderTextColor={colors.muted}
           {...rest}
         />
         {suffix ? (
-          <Typography variant="label" color={Colors.light.muted} style={styles.suffix}>
+          <Typography variant="label" color={colors.muted} style={styles.suffix}>
             {suffix}
           </Typography>
         ) : null}
@@ -61,9 +62,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     borderRadius: radius.md,
     borderWidth: 1,
-    borderColor: Colors.light.border,
-    backgroundColor: Colors.light.card,
-    color: Colors.light.text,
+    borderColor: '#1E2436',
+    backgroundColor: '#0F172A',
+    color: '#E7ECF7',
     fontFamily: typography.medium,
     fontSize: 16,
   },
