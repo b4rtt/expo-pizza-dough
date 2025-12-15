@@ -1,18 +1,22 @@
-import { Pressable, ScrollView, Share, StyleSheet, View } from "react-native";
+import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Haptics from "expo-haptics";
-import { Feather } from "@expo/vector-icons";
-import { memo } from "react";
 import { useRouter } from "expo-router";
+import { memo } from "react";
+import { Pressable, ScrollView, Share, StyleSheet, View } from "react-native";
 
-import { spacing } from "@/constants/theme";
 import { GlassCard } from "@/components/GlassCard";
 import { ScreenBackground } from "@/components/ScreenBackground";
 import { Typography } from "@/components/Typography";
-import { FORM_STORAGE_KEY, calculatePizza, defaultPizzaInput } from "@/lib/pizzaCalculator";
+import { getInfoSections } from "@/constants/infoText";
+import { spacing } from "@/constants/theme";
+import {
+  FORM_STORAGE_KEY,
+  calculatePizza,
+  defaultPizzaInput,
+} from "@/lib/pizzaCalculator";
 import { useTranslation } from "@/providers/LocalizationProvider";
 import { useThemeColors } from "@/providers/ThemeProvider";
-import { getInfoSections } from "@/constants/infoText";
 
 export default function TipsScreen() {
   const { t, language } = useTranslation();
@@ -33,7 +37,9 @@ export default function TipsScreen() {
       const result = calculatePizza({
         style: parsed.style ?? defaultPizzaInput.style,
         yeastType: parsed.yeastType ?? defaultPizzaInput.yeastType,
-        number: parsed.number ? parseInt(parsed.number, 10) : defaultPizzaInput.number,
+        number: parsed.number
+          ? parseInt(parsed.number, 10)
+          : defaultPizzaInput.number,
         gramsPerPizza: parsed.gramsPerPizza
           ? parseInt(parsed.gramsPerPizza, 10)
           : defaultPizzaInput.gramsPerPizza,
@@ -60,18 +66,31 @@ export default function TipsScreen() {
 
   return (
     <ScreenBackground>
-      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
+      >
         <Typography variant="display" style={{ marginTop: spacing.md }}>
           {t("tipsTitle")}
         </Typography>
-        <Typography variant="subtitle" color={colors.muted} style={{ marginTop: 6 }}>
+        <Typography
+          variant="subtitle"
+          color={colors.muted}
+          style={{ marginTop: 6 }}
+        >
           {t("appSubtitle")}
         </Typography>
 
         <GlassCard style={{ marginTop: spacing.lg }}>
-          <TipBlock title={t("tipHydrationTitle")} body={t("tipHydrationBody")} />
+          <TipBlock
+            title={t("tipHydrationTitle")}
+            body={t("tipHydrationBody")}
+          />
           <Divider />
-          <TipBlock title={t("tipFermentationTitle")} body={t("tipFermentationBody")} />
+          <TipBlock
+            title={t("tipFermentationTitle")}
+            body={t("tipFermentationBody")}
+          />
           <Divider />
           <TipBlock title={t("tipBakingTitle")} body={t("tipBakingBody")} />
         </GlassCard>
@@ -80,7 +99,13 @@ export default function TipsScreen() {
           <Typography variant="title" style={{ marginBottom: spacing.sm }}>
             {t("tipActionsTitle")}
           </Typography>
-          <View style={{ flexDirection: "row", gap: spacing.sm, marginTop: spacing.sm }}>
+          <View
+            style={{
+              flexDirection: "row",
+              gap: spacing.sm,
+              marginTop: spacing.sm,
+            }}
+          >
             <Pressable
               onPress={handleShare}
               style={({ pressed }) => [
@@ -88,7 +113,11 @@ export default function TipsScreen() {
                 { opacity: pressed ? 0.7 : 1, borderColor: colors.border },
               ]}
             >
-              <ButtonLabel icon="share-2" text={t("tipShare")} color={colors.tint} />
+              <ButtonLabel
+                icon="share-2"
+                text={t("tipShare")}
+                color={colors.tint}
+              />
             </Pressable>
             <Pressable
               onPress={handleReset}
@@ -97,7 +126,11 @@ export default function TipsScreen() {
                 { opacity: pressed ? 0.7 : 1, borderColor: colors.border },
               ]}
             >
-              <ButtonLabel icon="rotate-ccw" text={t("tipReset")} color={colors.text} />
+              <ButtonLabel
+                icon="rotate-ccw"
+                text={t("tipReset")}
+                color={colors.text}
+              />
             </Pressable>
             <Pressable
               onPress={() => router.push("/recipes")}
@@ -106,14 +139,18 @@ export default function TipsScreen() {
                 { opacity: pressed ? 0.7 : 1, borderColor: colors.border },
               ]}
             >
-              <ButtonLabel icon="bookmark" text={t("tipSaved")} color={colors.text} />
+              <ButtonLabel
+                icon="bookmark"
+                text={t("tipSaved")}
+                color={colors.text}
+              />
             </Pressable>
           </View>
         </GlassCard>
 
         <GlassCard style={{ marginTop: spacing.lg }}>
-          <Typography variant="title">INFO.md</Typography>
-          {getInfoSections(language === 'cs' ? 'cs' : 'en').map((section) => (
+          <Typography variant="title">{t("moreInfoTitle")}</Typography>
+          {getInfoSections(language === "cs" ? "cs" : "en").map((section) => (
             <View key={section.title} style={styles.infoBlock}>
               <Typography variant="subtitle">{section.title}</Typography>
               <Typography variant="body" color={colors.muted}>
