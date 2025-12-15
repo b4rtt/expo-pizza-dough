@@ -32,7 +32,7 @@
 ## Tipy / postup
 
 - [x] Strukturovat obsah: hydratace, fermentace, pečení (krátké bloky), případně odkazy na video.
-- [ ] Přidat mini-kalkulačku/připomínky (např. teplota vody, doba fermentace) – optional.
+- [x] Přidat mini-kalkulačku/připomínky (např. teplota vody, doba fermentace) – optional.
 - [x] Přidat tlačítko „Reset kalkulačky“ a „Sdílet recept“.
 - [x] Přidat možnost uložit si recept, přidat novou záložku, kde budou uložené recepty.
 - [ ] Ukládání receptu by mělo mít možnost recept pojmenovat
@@ -49,7 +49,7 @@
 
 - [x] Vrstvené glass panely (blur, průsvitná mřížka, odlesky), gradientní pozadí inspirované Airbnb.
 - [x] Animace vstupů a listů (jemný fade na kartách).
-- [ ] Ikony (např. tab i CTA) sjednotit s novým stylem.
+- [x] Ikony (CTA) sjednoceny + ikonky v Tipy.
 
 ## Release checklist
 

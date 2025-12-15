@@ -1,9 +1,14 @@
-import { Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { NativeTabs, Icon, Label, VectorIcon } from 'expo-router/unstable-native-tabs';
+import { Ionicons } from "@expo/vector-icons";
+import {
+  Icon,
+  Label,
+  NativeTabs,
+  VectorIcon,
+} from "expo-router/unstable-native-tabs";
+import { Platform } from "react-native";
 
-import { useTranslation } from '@/providers/LocalizationProvider';
-import { useThemeColors } from '@/providers/ThemeProvider';
+import { useTranslation } from "@/providers/LocalizationProvider";
+import { useThemeColors } from "@/providers/ThemeProvider";
 
 export default function TabLayout() {
   const { t } = useTranslation();
@@ -12,29 +17,33 @@ export default function TabLayout() {
   return (
     <NativeTabs
       disableTransparentOnScrollEdge
-      appearance={Platform.OS === 'ios' ? 'glass' : 'floating'}
-      tintColor={Platform.OS === 'ios' ? undefined : colors.tint}
-      labelStyle={{ color: Platform.OS === 'ios' ? undefined : colors.muted }}>
+      blurEffect={Platform.OS === "ios" ? "systemChromeMaterial" : undefined}
+      //fix color
+      tintColor={Platform.OS === "ios" ? "green" : colors.tint}
+      labelStyle={{ color: Platform.OS === "ios" ? undefined : colors.muted }}
+    >
       <NativeTabs.Trigger name="index">
         {Platform.select({
-          ios: <Icon sf={{ default: 'chart.bar', selected: 'chart.bar.fill' }} />,
+          ios: (
+            <Icon sf={{ default: "chart.bar", selected: "chart.bar.fill" }} />
+          ),
           default: <VectorIcon family={Ionicons} name="calculator-outline" />,
         })}
-        <Label>{t('tabCalculator')}</Label>
+        <Label>{t("tabCalculator")}</Label>
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="tips">
         {Platform.select({
-          ios: <Icon sf={{ default: 'sparkles', selected: 'sparkles' }} />,
+          ios: <Icon sf={{ default: "sparkles", selected: "sparkles" }} />,
           default: <VectorIcon family={Ionicons} name="bulb-outline" />,
         })}
-        <Label>{t('tabTips')}</Label>
+        <Label>{t("tabTips")}</Label>
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="recipes">
         {Platform.select({
-          ios: <Icon sf={{ default: 'bookmark', selected: 'bookmark.fill' }} />,
+          ios: <Icon sf={{ default: "bookmark", selected: "bookmark.fill" }} />,
           default: <VectorIcon family={Ionicons} name="bookmark-outline" />,
         })}
-        <Label>{t('savedRecipes')}</Label>
+        <Label>{t("savedRecipes")}</Label>
       </NativeTabs.Trigger>
     </NativeTabs>
   );
