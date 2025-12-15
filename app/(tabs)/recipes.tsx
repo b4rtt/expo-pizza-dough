@@ -106,6 +106,10 @@ export default function RecipesScreen() {
           </Pressable>
         </View>
       </View>
+      <View style={styles.tags}>
+        <Tag label={`${t('hydration')}: ${item.result.hydration}%`} />
+        <Tag label={`${t('yeastLabel')}: ${t(item.result.yeastType === 'fresh' ? 'freshYeast' : 'dryYeast')}`} />
+      </View>
       <View style={styles.row}>
         <Typography variant="body" color={colors.muted}>
           {t('flour')}
@@ -208,4 +212,29 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm,
     paddingVertical: 8,
   },
+  tags: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginTop: spacing.sm,
+  },
 });
+
+function Tag({ label }: { label: string }) {
+  const { colors } = useThemeColors();
+  return (
+    <View
+      style={{
+        paddingHorizontal: spacing.sm,
+        paddingVertical: 6,
+        borderRadius: radius.md,
+        backgroundColor: colors.glassSurface,
+        borderWidth: 1,
+        borderColor: colors.border,
+      }}>
+      <Typography variant="label" color={colors.muted}>
+        {label}
+      </Typography>
+    </View>
+  );
+}

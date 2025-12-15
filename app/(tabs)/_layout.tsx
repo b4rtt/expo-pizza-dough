@@ -17,8 +17,6 @@ export default function TabLayout() {
   return (
     <NativeTabs
       disableTransparentOnScrollEdge
-      blurEffect={Platform.OS === "ios" ? "systemChromeMaterial" : undefined}
-      //fix color
       tintColor={colors.tint}
       labelStyle={{ color: Platform.OS === "ios" ? undefined : colors.muted }}
     >
