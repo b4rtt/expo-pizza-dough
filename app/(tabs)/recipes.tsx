@@ -85,21 +85,21 @@ export default function RecipesScreen() {
       <View style={styles.cardTop}>
         <View style={{ flex: 1 }}>
           <Typography variant="title">{item.title}</Typography>
-          <Typography variant="label" color={colors.muted} style={{ marginTop: 4 }}>
+          <Typography variant="label" color={colors.muted} style={{ marginTop: 6 }}>
             {t(`style_${item.result.style.replace('-', '_')}`)} • {formatter.format(item.result.totalWeight)} g
           </Typography>
         </View>
         <View style={styles.actions}>
           <Pressable
             onPress={() => shareRecipe(item)}
-            style={({ pressed }) => [styles.pill, { opacity: pressed ? 0.7 : 1, borderColor: colors.border }]}>
+            style={({ pressed }) => [styles.pill, { opacity: pressed ? 0.6 : 1, borderColor: colors.border }]}>
             <Typography variant="label" color={colors.text}>
               {t('share')}
             </Typography>
           </Pressable>
           <Pressable
             onPress={() => deleteRecipe(item.id)}
-            style={({ pressed }) => [styles.pill, { opacity: pressed ? 0.7 : 1, borderColor: colors.tint }]}>
+            style={({ pressed }) => [styles.pill, { opacity: pressed ? 0.6 : 1, borderColor: colors.tint }]}>
             <Typography variant="label" color={colors.tint}>
               {t('delete')}
             </Typography>
@@ -152,7 +152,7 @@ export default function RecipesScreen() {
         onPress={() => router.push('/')}
         style={({ pressed }) => [
           styles.pill,
-          { marginTop: spacing.md, opacity: pressed ? 0.7 : 1, borderColor: colors.border },
+          { marginTop: spacing.lg, opacity: pressed ? 0.6 : 1, borderColor: colors.border },
         ]}>
         <Typography variant="label" color={colors.tint}>
           {t('savedGoCalc')}
@@ -168,16 +168,16 @@ export default function RecipesScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
         ListHeaderComponent={
-          <View style={{ marginBottom: spacing.md }}>
+          <View style={{ marginBottom: spacing.lg }}>
             <Typography variant="display">{t('savedRecipes')}</Typography>
-            <Typography variant="subtitle" color={colors.muted} style={{ marginTop: 6 }}>
+            <Typography variant="subtitle" color={colors.muted} style={{ marginTop: 8 }}>
               {t('appSubtitle')}
             </Typography>
           </View>
         }
         renderItem={renderItem}
         ListEmptyComponent={emptyState}
-        ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
+        ItemSeparatorComponent={() => <View style={{ height: spacing.lg }} />}
         showsVerticalScrollIndicator={false}
       />
     </ScreenBackground>
@@ -186,37 +186,37 @@ export default function RecipesScreen() {
 
 const styles = StyleSheet.create({
   list: {
-    paddingHorizontal: 18,
-    paddingTop: spacing.md,
+    paddingTop: spacing.lg,
     paddingBottom: 140,
   },
   card: {
-    padding: spacing.md,
+    padding: spacing.xl,
   },
   cardTop: {
     flexDirection: 'row',
-    gap: spacing.sm,
+    gap: spacing.md,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 8,
+    marginTop: 12,
   },
   actions: {
     flexDirection: 'row',
-    gap: 8,
+    gap: spacing.sm,
   },
   pill: {
     borderWidth: 1,
-    borderRadius: radius.md,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 8,
+    borderRadius: radius.lg,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 10,
   },
   tags: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
-    marginTop: spacing.sm,
+    gap: spacing.sm,
+    marginTop: spacing.md,
+    marginBottom: spacing.sm,
   },
 });
 
@@ -225,9 +225,9 @@ function Tag({ label }: { label: string }) {
   return (
     <View
       style={{
-        paddingHorizontal: spacing.sm,
-        paddingVertical: 6,
-        borderRadius: radius.md,
+        paddingHorizontal: spacing.md,
+        paddingVertical: 8,
+        borderRadius: radius.lg,
         backgroundColor: colors.glassSurface,
         borderWidth: 1,
         borderColor: colors.border,

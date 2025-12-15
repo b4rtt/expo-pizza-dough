@@ -6,20 +6,21 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useThemeColors } from '@/providers/ThemeProvider';
 
 export function ScreenBackground({ children }: PropsWithChildren) {
-  const { effective, colors } = useThemeColors();
+  const { effective } = useThemeColors();
   const isLight = effective === 'light';
+  const bgColor = isLight ? '#FFFFFF' : '#000000';
   return (
     <SafeAreaView
-      style={[styles.container, { backgroundColor: colors.background }]}
+      style={[styles.container, { backgroundColor: bgColor }]}
       edges={['top', 'left', 'right', 'bottom']}>
       <LinearGradient
         colors={
           isLight
-            ? ['#F7F9FF', '#EDF2FF', '#E6ECFB']
-            : ['#101830', '#0A1024', '#090E1D']
+            ? ['#FFFFFF', '#F9FAFB', '#F3F4F6']
+            : ['#000000', '#000000', '#000000']
         }
-        start={{ x: 0.2, y: 0 }}
-        end={{ x: 0.9, y: 1 }}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
         style={StyleSheet.absoluteFillObject}
       />
       <View style={styles.overlay}>{children}</View>
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    paddingHorizontal: 18,
-    paddingTop: 12,
+    paddingHorizontal: 16,
+    paddingTop: 8,
   },
 });

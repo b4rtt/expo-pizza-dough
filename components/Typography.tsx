@@ -10,13 +10,13 @@ type Props = TextProps & {
   color?: string;
 };
 
-const baseStyles: Record<Variant, { fontFamily: string; fontSize: number; lineHeight: number }> = {
-  display: { fontFamily: typography.display, fontSize: 34, lineHeight: 40 },
-  title: { fontFamily: typography.heading, fontSize: 22, lineHeight: 28 },
-  subtitle: { fontFamily: typography.subheading, fontSize: 16, lineHeight: 22 },
+const baseStyles: Record<Variant, { fontFamily: string; fontSize: number; lineHeight: number; letterSpacing?: number }> = {
+  display: { fontFamily: typography.display, fontSize: 32, lineHeight: 40, letterSpacing: -0.5 },
+  title: { fontFamily: typography.heading, fontSize: 20, lineHeight: 28, letterSpacing: -0.2 },
+  subtitle: { fontFamily: typography.subheading, fontSize: 16, lineHeight: 24 },
   body: { fontFamily: typography.body, fontSize: 15, lineHeight: 22 },
   label: { fontFamily: typography.medium, fontSize: 13, lineHeight: 18 },
-  button: { fontFamily: typography.bold, fontSize: 15, lineHeight: 20 },
+  button: { fontFamily: typography.bold, fontSize: 15, lineHeight: 20, letterSpacing: -0.1 },
 };
 
 export function Typography({ variant = 'body', color, style, children, ...rest }: Props) {

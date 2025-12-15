@@ -1,31 +1,31 @@
-const primary = '#FF5A5F';
-const secondary = '#3EE0B1';
+const primary = '#FF385C';
+const secondary = '#00A699';
 
 const darkPalette = {
-  text: '#E7ECF7',
-  background: '#0C1224',
+  text: '#EDEFEF',
+  background: '#000000',
   tint: primary,
-  muted: '#A9B4C7',
-  tabIconDefault: '#A9B4C7',
+  muted: '#9CA3AF',
+  tabIconDefault: '#6B7280',
   tabIconSelected: primary,
-  border: '#1E2436',
-  card: '#0F172A',
-  glassStroke: 'rgba(255, 255, 255, 0.12)',
-  glassSurface: 'rgba(255, 255, 255, 0.08)',
+  border: 'rgba(255, 255, 255, 0.08)',
+  card: 'rgba(255, 255, 255, 0.05)',
+  glassStroke: 'rgba(255, 255, 255, 0.06)',
+  glassSurface: 'rgba(255, 255, 255, 0.03)',
   secondary,
 };
 
 const lightPalette = {
-  text: '#0B1224',
-  background: '#F5F7FB',
+  text: '#1F2937',
+  background: '#FFFFFF',
   tint: primary,
-  muted: '#5B667A',
-  tabIconDefault: '#7B8599',
+  muted: '#6B7280',
+  tabIconDefault: '#9CA3AF',
   tabIconSelected: primary,
-  border: '#E4E8F1',
+  border: '#E5E7EB',
   card: '#FFFFFF',
-  glassStroke: 'rgba(12, 18, 36, 0.08)',
-  glassSurface: 'rgba(255, 255, 255, 0.7)',
+  glassStroke: 'rgba(0, 0, 0, 0.04)',
+  glassSurface: 'rgba(0, 0, 0, 0.02)',
   secondary,
 };
 

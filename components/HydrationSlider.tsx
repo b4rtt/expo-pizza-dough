@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { LayoutChangeEvent, Pressable, StyleSheet, View } from 'react-native';
+import { GestureResponderEvent, LayoutChangeEvent, Pressable, StyleSheet, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
 
 import { radius, spacing, typography } from '@/constants/theme';
@@ -33,12 +33,21 @@ export function HydrationSlider({
     widthRef.current = e.nativeEvent.layout.width;
   };
 
-  const handlePress = async (evt: any) => {
+  const handlePress = async (evt: GestureResponderEvent) => {
     const x = evt.nativeEvent.locationX;
     const percent = x / widthRef.current;
     const next = clamp(Math.round(min + (max - min) * percent));
     if (next !== value) {
       await Haptics.selectionAsync();
+      onChange(next);
+    }
+  };
+
+  const handleMove = (evt: GestureResponderEvent) => {
+    const x = evt.nativeEvent.locationX;
+    const percent = Math.max(0, Math.min(1, x / widthRef.current));
+    const next = clamp(Math.round(min + (max - min) * percent));
+    if (next !== value) {
       onChange(next);
     }
   };
@@ -58,41 +67,46 @@ export function HydrationSlider({
           </Typography>
         ) : null}
       </View>
-      <Pressable
-        onPressIn={() => setPressed(true)}
-        onPressOut={() => setPressed(false)}
-        onPress={handlePress}
-        onLayout={handleLayout}
-        style={[
-          styles.track,
-          {
-            backgroundColor: colors.glassSurface,
-            borderColor: colors.border,
-          },
-        ]}>
-        <View
+      <View style={{ paddingVertical: spacing.sm, paddingHorizontal: spacing.sm }}>
+        <Pressable
+          onPressIn={() => setPressed(true)}
+          onPressOut={() => setPressed(false)}
+          onPress={handlePress}
+          onResponderMove={handleMove}
+          onStartShouldSetResponder={() => true}
+          onMoveShouldSetResponder={() => true}
+          onLayout={handleLayout}
           style={[
-            styles.fill,
+            styles.track,
             {
-              width: `${progress * 100}%`,
-              backgroundColor: colors.tint,
-              opacity: 0.8,
+              backgroundColor: colors.glassSurface,
+              borderColor: colors.border,
             },
-          ]}
-        />
-        <View
-          style={[
-            styles.knob,
-            {
-              left: knobLeft,
-              borderColor: colors.glassStroke,
-              backgroundColor: colors.card,
-              transform: [{ translateX: -12 }],
-              shadowOpacity: pressed ? 0.4 : 0.25,
-            },
-          ]}
-        />
-      </Pressable>
+          ]}>
+          <View
+            style={[
+              styles.fill,
+              {
+                width: `${progress * 100}%`,
+                backgroundColor: colors.tint,
+                opacity: 0.95,
+              },
+            ]}
+          />
+          <View
+            style={[
+              styles.knob,
+              {
+                left: knobLeft,
+                borderColor: colors.tint,
+                backgroundColor: "#FFFFFF",
+                transform: [{ translateX: -14 }, { scale: pressed ? 1.1 : 1 }],
+                shadowOpacity: pressed ? 0.3 : 0.2,
+              },
+            ]}
+          />
+        </Pressable>
+      </View>
       <View style={styles.valueRow}>
         <Typography variant="title">{value}%</Typography>
         <Typography variant="label" color={colors.muted}>
@@ -108,33 +122,36 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 6,
+    marginBottom: 8,
   },
   track: {
-    height: 14,
+    height: 8,
     borderRadius: 999,
-    borderWidth: 1,
-    overflow: 'hidden',
+    borderWidth: 0,
+    overflow: 'visible',
+    position: 'relative',
   },
   fill: {
     position: 'absolute',
     top: 0,
     bottom: 0,
     left: 0,
+    borderRadius: 999,
   },
   knob: {
     position: 'absolute',
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    top: -5,
-    borderWidth: 1,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    top: -10,
+    borderWidth: 3,
     shadowColor: '#000',
-    shadowRadius: 6,
+    shadowRadius: 12,
     shadowOffset: { width: 0, height: 3 },
+    elevation: 8,
   },
   valueRow: {
-    marginTop: spacing.xs,
+    marginTop: spacing.sm,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

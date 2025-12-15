@@ -55,14 +55,7 @@ export default function SettingsScreen() {
   return (
     <ScreenBackground>
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-        <Typography variant="display" style={{ marginTop: spacing.lg }}>
-          {t('settings')}
-        </Typography>
-        <Typography variant="subtitle" color={colors.muted} style={{ marginTop: 6 }}>
-          {t('settingsLanguage')}
-        </Typography>
-
-        <GlassCard style={{ marginTop: spacing.lg }}>
+        <GlassCard style={{ marginTop: spacing.xl }}>
           <Typography variant="label" color={colors.muted} style={{ marginBottom: 8 }}>
             {t('settingsLanguage')}
           </Typography>

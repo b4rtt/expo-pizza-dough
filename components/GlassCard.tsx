@@ -14,15 +14,15 @@ export function GlassCard({ children, style, intensity = 60 }: Props) {
   const { colors } = useThemeColors();
   const canUseGlass = isLiquidGlassAvailable() && Platform.OS === "ios";
   const clampedIntensity = Math.max(0, Math.min(100, intensity));
-  const tintOpacity = 0.08 + (clampedIntensity / 100) * 0.22;
+  const tintOpacity = 0.04 + (clampedIntensity / 100) * 0.12;
   const tintColor = `rgba(0,0,0,${tintOpacity.toFixed(3)})`;
   const fade = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.timing(fade, {
       toValue: 1,
-      duration: 260,
-      delay: 50,
+      duration: 320,
+      delay: 30,
       useNativeDriver: true,
     }).start();
   }, [fade]);
@@ -65,7 +65,8 @@ export function GlassCard({ children, style, intensity = 60 }: Props) {
 const styles = StyleSheet.create({
   card: {
     borderRadius: radius.lg,
+    overflow: "hidden",
     borderWidth: 1,
-    padding: 16,
+    padding: 20,
   },
 });

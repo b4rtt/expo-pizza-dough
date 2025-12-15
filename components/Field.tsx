@@ -49,7 +49,7 @@ export const Field = forwardRef<TextInput, Props>(({ label, suffix, helper, styl
 
 const styles = StyleSheet.create({
   wrapper: {
-    gap: 6,
+    gap: 8,
   },
   labelRow: {
     flexDirection: 'row',
@@ -63,15 +63,15 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    paddingVertical: spacing.sm,
+    paddingVertical: 12,
     paddingHorizontal: spacing.md,
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
     borderWidth: 1,
     borderColor: 'transparent',
     backgroundColor: 'transparent',
     color: '#000',
     fontFamily: typography.medium,
-    fontSize: 16,
+    fontSize: 15,
   },
   suffix: {
     position: 'absolute',

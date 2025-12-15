@@ -1,10 +1,10 @@
-import { Pressable, StyleSheet, View } from 'react-native';
-import * as Haptics from 'expo-haptics';
-import { Feather } from '@expo/vector-icons';
+import { Feather } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
+import { Pressable, StyleSheet, View } from "react-native";
 
-import { radius, spacing, typography } from '@/constants/theme';
-import { Typography } from './Typography';
-import { useThemeColors } from '@/providers/ThemeProvider';
+import { radius, spacing } from "@/constants/theme";
+import { useThemeColors } from "@/providers/ThemeProvider";
+import { Typography } from "./Typography";
 
 type Props = {
   label: string;
@@ -16,7 +16,15 @@ type Props = {
   suffix?: string;
 };
 
-export function Stepper({ label, value, onChange, min = 0, max = 9999, step = 1, suffix }: Props) {
+export function Stepper({
+  label,
+  value,
+  onChange,
+  min = 0,
+  max = 9999,
+  step = 1,
+  suffix,
+}: Props) {
   const { colors } = useThemeColors();
 
   const clamp = (v: number) => Math.min(max, Math.max(min, v));
@@ -28,8 +36,17 @@ export function Stepper({ label, value, onChange, min = 0, max = 9999, step = 1,
   };
 
   return (
-    <View style={[styles.container, { borderColor: colors.border, backgroundColor: colors.card }]}>
-      <Typography variant="label" color={colors.muted} style={{ marginBottom: 6 }}>
+    <View
+      style={[
+        styles.container,
+        { borderColor: colors.border, backgroundColor: colors.card },
+      ]}
+    >
+      <Typography
+        variant="label"
+        color={colors.muted}
+        style={{ marginBottom: 8 }}
+      >
         {label}
       </Typography>
       <View style={styles.row}>
@@ -40,15 +57,16 @@ export function Stepper({ label, value, onChange, min = 0, max = 9999, step = 1,
             {
               borderColor: colors.border,
               backgroundColor: colors.glassSurface,
-              opacity: pressed ? 0.7 : 1,
+              opacity: pressed ? 0.6 : 1,
             },
-          ]}>
-          <Feather name="minus" size={18} color={colors.text} />
+          ]}
+        >
+          <Feather name="minus" size={16} color={colors.text} />
         </Pressable>
         <View style={styles.valueBox}>
           <Typography variant="title">
             {value}
-            {suffix ? ` ${suffix}` : ''}
+            {suffix ? ` ${suffix}` : ""}
           </Typography>
         </View>
         <Pressable
@@ -56,12 +74,12 @@ export function Stepper({ label, value, onChange, min = 0, max = 9999, step = 1,
           style={({ pressed }) => [
             styles.button,
             {
-              borderColor: colors.border,
               backgroundColor: colors.tint,
-              opacity: pressed ? 0.8 : 1,
+              opacity: pressed ? 0.85 : 1,
             },
-          ]}>
-          <Feather name="plus" size={18} color="#0A1024" />
+          ]}
+        >
+          <Feather name="plus" size={16} color="#FFFFFF" />
         </Pressable>
       </View>
     </View>
@@ -71,24 +89,24 @@ export function Stepper({ label, value, onChange, min = 0, max = 9999, step = 1,
 const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
-    borderRadius: radius.md,
-    padding: spacing.md,
+    borderRadius: radius.lg,
+    padding: spacing.lg,
   },
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.md,
   },
   button: {
-    width: 44,
-    height: 44,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    borderWidth: 0,
+    alignItems: "center",
+    justifyContent: "center",
   },
   valueBox: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
   },
 });

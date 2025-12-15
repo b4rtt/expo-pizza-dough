@@ -9,7 +9,7 @@ import { GlassCard } from "@/components/GlassCard";
 import { ScreenBackground } from "@/components/ScreenBackground";
 import { Typography } from "@/components/Typography";
 import { getInfoSections } from "@/constants/infoText";
-import { spacing } from "@/constants/theme";
+import { radius, spacing } from "@/constants/theme";
 import {
   FORM_STORAGE_KEY,
   calculatePizza,
@@ -70,13 +70,13 @@ export default function TipsScreen() {
         contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}
       >
-        <Typography variant="display" style={{ marginTop: spacing.md }}>
+        <Typography variant="display" style={{ marginTop: spacing.lg }}>
           {t("tipsTitle")}
         </Typography>
         <Typography
           variant="subtitle"
           color={colors.muted}
-          style={{ marginTop: 6 }}
+          style={{ marginTop: 8 }}
         >
           {t("appSubtitle")}
         </Typography>
@@ -95,22 +95,22 @@ export default function TipsScreen() {
           <TipBlock title={t("tipBakingTitle")} body={t("tipBakingBody")} />
         </GlassCard>
 
-        <GlassCard style={{ marginTop: spacing.lg }}>
-          <Typography variant="title" style={{ marginBottom: spacing.sm }}>
+        <GlassCard style={{ marginTop: spacing.xl }}>
+          <Typography variant="title" style={{ marginBottom: spacing.md }}>
             {t("tipActionsTitle")}
           </Typography>
           <View
             style={{
               flexDirection: "row",
-              gap: spacing.sm,
-              marginTop: spacing.sm,
+              gap: spacing.md,
+              marginTop: spacing.md,
             }}
           >
             <Pressable
               onPress={handleShare}
               style={({ pressed }) => [
                 styles.pill,
-                { opacity: pressed ? 0.7 : 1, borderColor: colors.border },
+                { opacity: pressed ? 0.6 : 1, borderColor: colors.border },
               ]}
             >
               <ButtonLabel
@@ -123,7 +123,7 @@ export default function TipsScreen() {
               onPress={handleReset}
               style={({ pressed }) => [
                 styles.pill,
-                { opacity: pressed ? 0.7 : 1, borderColor: colors.border },
+                { opacity: pressed ? 0.6 : 1, borderColor: colors.border },
               ]}
             >
               <ButtonLabel
@@ -136,7 +136,7 @@ export default function TipsScreen() {
               onPress={() => router.push("/recipes")}
               style={({ pressed }) => [
                 styles.pill,
-                { opacity: pressed ? 0.7 : 1, borderColor: colors.border },
+                { opacity: pressed ? 0.6 : 1, borderColor: colors.border },
               ]}
             >
               <ButtonLabel
@@ -148,14 +148,18 @@ export default function TipsScreen() {
           </View>
         </GlassCard>
 
-        <GlassCard style={{ marginTop: spacing.lg }}>
+        <GlassCard style={{ marginTop: spacing.xl }}>
           <Typography variant="title">{t("moreInfoTitle")}</Typography>
           {getInfoSections(language === "cs" ? "cs" : "en").map((section) => (
             <View key={section.title} style={styles.infoBlock}>
               <Typography variant="subtitle">
                 {section.emoji} {section.title}
               </Typography>
-              <Typography variant="body" color={colors.muted}>
+              <Typography
+                variant="body"
+                color={colors.muted}
+                style={{ marginTop: spacing.sm }}
+              >
                 {section.body}
               </Typography>
             </View>
@@ -171,7 +175,7 @@ export default function TipsScreen() {
 function TipBlock({ title, body }: { title: string; body: string }) {
   const { colors } = useThemeColors();
   return (
-    <View style={{ gap: 6 }}>
+    <View style={{ gap: spacing.sm }}>
       <Typography variant="title">{title}</Typography>
       <Typography variant="body" color={colors.muted}>
         {body}
@@ -187,22 +191,22 @@ function Divider() {
 
 const styles = StyleSheet.create({
   scroll: {
-    paddingBottom: 120,
+    paddingBottom: 140,
   },
   divider: {
     height: 1,
-    marginVertical: spacing.md,
+    marginVertical: spacing.lg,
   },
   pill: {
     flex: 1,
     borderWidth: 1,
-    borderRadius: 12,
-    paddingVertical: 12,
+    borderRadius: radius.lg,
+    paddingVertical: 14,
     alignItems: "center",
   },
   infoBlock: {
-    marginTop: spacing.lg,
-    gap: spacing.sm,
+    marginTop: spacing.xl,
+    gap: spacing.md,
   },
 });
 

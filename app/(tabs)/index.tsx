@@ -255,16 +255,16 @@ export default function CalculatorScreen() {
   return (
     <ScreenBackground>
       <ScrollView
-        contentContainerStyle={[styles.scroll, { paddingBottom: spacing.xl + 140 }]}
+        contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}
       >
         <View style={[styles.topRow, styles.maxWidth]}>
           <View style={{ flex: 1 }}>
-            <Typography variant="display">🍕 {t("appTitle")}</Typography>
+            <Typography variant="display">{t("appTitle")}</Typography>
             <Typography
               variant="subtitle"
               color={colors.muted}
-              style={{ marginTop: 4 }}
+              style={{ marginTop: 6 }}
             >
               {t("appSubtitle")}
             </Typography>
@@ -274,62 +274,47 @@ export default function CalculatorScreen() {
             style={({ pressed }) => [
               styles.iconButton,
               {
-                opacity: pressed ? 0.7 : 1,
+                opacity: pressed ? 0.6 : 1,
                 backgroundColor: colors.card,
                 borderColor: colors.border,
               },
             ]}
           >
-            <Feather name="settings" size={22} color={colors.text} />
+            <Feather name="settings" size={20} color={colors.text} />
           </Pressable>
         </View>
 
         <Animated.View style={{ transform: [{ scale: styleAnim }] }}>
           <GlassCard style={styles.heroCard} intensity={85}>
-            <View style={styles.heroRow}>
-              <View style={{ flex: 1 }}>
-                <Typography variant="label" color={colors.muted}>
-                  {t("summaryTitle")}
-                </Typography>
-                <Typography variant="title" style={{ marginTop: 4 }}>
-                  {t(`style_${result.style.replace("-", "_")}`)}
-                </Typography>
-              </View>
-              <View
-                style={[
-                  styles.metric,
-                  {
-                    backgroundColor: colors.glassSurface,
-                    borderColor: colors.glassStroke,
-                  },
-                ]}
-              >
-                <Typography variant="label" color={colors.muted}>
+            <Typography variant="label" color={colors.muted} style={{ marginBottom: spacing.xs }}>
+              {t("summaryTitle")}
+            </Typography>
+            <Typography variant="display" style={{ marginBottom: spacing.lg }}>
+              {t(`style_${result.style.replace("-", "_")}`)}
+            </Typography>
+            <View style={styles.heroMetrics}>
+              <View style={styles.metricBox}>
+                <Typography variant="label" color={colors.muted} style={{ marginBottom: spacing.xs }}>
                   {t("totalWeight")}
                 </Typography>
                 <Typography variant="title">
                   {formatWeight(result.totalWeight)} g
                 </Typography>
               </View>
-              <View
-                style={[
-                  styles.metric,
-                  {
-                    backgroundColor: colors.glassSurface,
-                    borderColor: colors.glassStroke,
-                  },
-                ]}
-              >
-                <Typography variant="label" color={colors.muted}>
+              <View style={styles.metricDivider} />
+              <View style={styles.metricBox}>
+                <Typography variant="label" color={colors.muted} style={{ marginBottom: spacing.xs }}>
                   {t("hydration")}
                 </Typography>
-                <Typography variant="title">{result.hydration}%</Typography>
+                <Typography variant="title">
+                  {result.hydration}%
+                </Typography>
               </View>
             </View>
           </GlassCard>
         </Animated.View>
 
-        <GlassCard style={[styles.card, { marginTop: spacing.md }]}>
+        <GlassCard style={[styles.card, { marginTop: spacing.lg }]}>
           <FieldButton
             label={t("styleLabel")}
             value={t(`style_${form.style.replace("-", "_")}`)}
@@ -337,7 +322,7 @@ export default function CalculatorScreen() {
             onPress={() => setSheet("style")}
           />
 
-          <View style={{ marginTop: spacing.sm }}>
+          <View style={{ marginTop: spacing.md }}>
             <FieldButton
               label={t("yeastLabel")}
               value={form.yeastType === "fresh" ? t("freshYeast") : t("dryYeast")}
@@ -346,7 +331,7 @@ export default function CalculatorScreen() {
             />
           </View>
 
-          <View style={{ marginTop: spacing.sm }}>
+          <View style={{ marginTop: spacing.md }}>
             <FieldButton
               label={t("numberLabel")}
               value={`${parsed.number}`}
@@ -355,37 +340,32 @@ export default function CalculatorScreen() {
             />
           </View>
 
-          <View style={[styles.row, { marginTop: spacing.md }]}>
-            <View style={{ flex: 1, marginRight: spacing.sm }}>
-              <Stepper
-                label={`🎯 ${t("numberLabel")}`}
-                value={parsed.number}
-                min={1}
-                max={50}
-                onChange={(num) =>
-                  setForm((prev) => ({ ...prev, number: String(num) }))
-                }
-              />
-            </View>
-            <View style={{ flex: 1, marginLeft: spacing.sm }}>
-              <Stepper
-                label={`⚖️ ${t("gramsLabel")}`}
-                value={parsed.gramsPerPizza}
-                min={80}
-                max={800}
-                step={10}
-                suffix="g"
-                onChange={(num) =>
-                  setForm((prev) => ({ ...prev, gramsPerPizza: String(num) }))
-                }
-              />
-            </View>
+          <View style={{ marginTop: spacing.lg, gap: spacing.md }}>
+            <Stepper
+              label={t("numberLabel")}
+              value={parsed.number}
+              min={1}
+              max={50}
+              onChange={(num) =>
+                setForm((prev) => ({ ...prev, number: String(num) }))
+              }
+            />
+            <Stepper
+              label={t("gramsLabel")}
+              value={parsed.gramsPerPizza}
+              min={80}
+              max={800}
+              step={10}
+              suffix="g"
+              onChange={(num) =>
+                setForm((prev) => ({ ...prev, gramsPerPizza: String(num) }))
+              }
+            />
           </View>
 
-          <View style={[styles.row, { marginTop: spacing.sm }]}>
-            <View style={{ flex: 1 }}>
+          <View style={{ marginTop: spacing.lg, gap: spacing.md }}>
             <HydrationSlider
-              label={`💧 ${t("hydrationInput")}`}
+              label={t("hydrationInput")}
               value={parsed.waterShare}
               min={45}
               max={90}
@@ -394,8 +374,6 @@ export default function CalculatorScreen() {
               }
               helper="45–90%"
             />
-          </View>
-          <View style={{ flex: 1 }}>
             <Field
               label={t("recipeName")}
               value={form.saveName}
@@ -405,17 +383,16 @@ export default function CalculatorScreen() {
               placeholder={t(`style_${form.style.replace("-", "_")}`)}
             />
           </View>
-        </View>
 
-        <View style={{ marginTop: spacing.md, gap: spacing.sm }}>
+        <View style={{ marginTop: spacing.lg, gap: spacing.md }}>
           <Typography variant="label" color={colors.muted}>
-            Quick set
+            Quick presets
           </Typography>
-          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.md }}>
             {[
-              { label: "🍕 2×230g", number: 2, grams: 230 },
-              { label: "🔥 4×260g", number: 4, grams: 260 },
-              { label: "🎉 8×250g", number: 8, grams: 250 },
+              { label: "🍕 2 × 230g", number: 2, grams: 230 },
+              { label: "👨‍👩‍👧‍👦 4 × 260g", number: 4, grams: 260 },
+              { label: "🎉 8 × 250g", number: 8, grams: 250 },
             ].map((preset) => (
               <Pressable
                 key={preset.label}
@@ -432,7 +409,7 @@ export default function CalculatorScreen() {
                     {
                       borderColor: colors.border,
                       backgroundColor: colors.glassSurface,
-                      opacity: pressed ? 0.8 : 1,
+                      opacity: pressed ? 0.6 : 1,
                     },
                   ]}
                 >
@@ -443,15 +420,15 @@ export default function CalculatorScreen() {
           </View>
         </GlassCard>
 
-        <GlassCard style={[styles.card, { marginTop: spacing.lg }]}>
-          <Typography variant="title" style={{ marginBottom: spacing.sm }}>
+        <GlassCard style={[styles.card, { marginTop: spacing.xl }]}>
+          <Typography variant="title" style={{ marginBottom: spacing.md }}>
             {t("resultsTitle")}
           </Typography>
           <View
             style={{
               flexDirection: width > 720 ? "row" : "column",
               flexWrap: "wrap",
-              gap: spacing.sm,
+              gap: spacing.md,
             }}
           >
             <View style={[styles.resultColumn, { flex: 1 }]}>
@@ -506,65 +483,73 @@ export default function CalculatorScreen() {
             </Typography>
           </View>
         </GlassCard>
-      </ScrollView>
-      <View style={[styles.actionBar, { paddingBottom: insets.bottom + 12 }]}>
-        <GlassCard intensity={95} style={{ padding: spacing.sm }}>
-          <View style={styles.actions}>
+
+        <GlassCard style={[styles.card, { marginTop: spacing.xl }]}>
+          <Typography variant="title" style={{ marginBottom: spacing.lg }}>
+            Actions
+          </Typography>
+          <View style={styles.actionButtons}>
             <Pressable
               onPress={resetForm}
               style={({ pressed }) => [
-                styles.secondaryButton,
-                { opacity: pressed ? 0.7 : 1, borderColor: colors.border },
+                styles.actionButton,
+                { 
+                  opacity: pressed ? 0.6 : 1, 
+                  borderColor: colors.border,
+                  backgroundColor: colors.card,
+                },
               ]}
             >
-              <ButtonLabel
-                icon="rotate-ccw"
-                text={t("reset")}
-                color={colors.text}
-              />
+              <Feather name="rotate-ccw" size={20} color={colors.text} style={{ marginBottom: spacing.xs }} />
+              <Typography variant="label" color={colors.text}>
+                {t("reset")}
+              </Typography>
             </Pressable>
             <Pressable
               onPress={handleShare}
               style={({ pressed }) => [
-                styles.primaryButton,
+                styles.actionButton,
                 {
                   opacity: pressed ? 0.85 : 1,
                   backgroundColor: parsed.number > 0 ? colors.tint : colors.border,
+                  borderColor: parsed.number > 0 ? colors.tint : colors.border,
                 },
               ]}
               disabled={parsed.number <= 0}
             >
-              <ButtonLabel icon="share-2" text={t("share")} color="#0A1024" />
+              <Feather name="share-2" size={20} color="#FFFFFF" style={{ marginBottom: spacing.xs }} />
+              <Typography variant="label" color="#FFFFFF">
+                {t("share")}
+              </Typography>
             </Pressable>
             <Pressable
               onPress={saveRecipe}
               style={({ pressed }) => [
-                styles.secondaryButton,
+                styles.actionButton,
                 {
-                  opacity: pressed ? 0.7 : 1,
+                  opacity: pressed ? 0.6 : 1,
                   borderColor: saving ? colors.border : colors.tint,
-                  backgroundColor: saving ? colors.glassSurface : "transparent",
+                  backgroundColor: saving ? colors.glassSurface : colors.card,
                 },
               ]}
               disabled={saving}
             >
-              <ButtonLabel
-                icon="bookmark"
-                text={saving ? "…" : t("save")}
-                color={saving ? colors.muted : colors.tint}
-              />
+              <Feather name="bookmark" size={20} color={saving ? colors.muted : colors.tint} style={{ marginBottom: spacing.xs }} />
+              <Typography variant="label" color={saving ? colors.muted : colors.tint}>
+                {saving ? "…" : t("save")}
+              </Typography>
             </Pressable>
           </View>
           {savedFlash ? (
-            <View style={styles.flashRow}>
-              <Feather name="check" size={14} color={colors.tint} />
-              <Typography variant="label" color={colors.tint} style={{ marginLeft: 4 }}>
+            <View style={[styles.flashRow, { marginTop: spacing.md }]}>
+              <Feather name="check" size={16} color={colors.tint} />
+              <Typography variant="body" color={colors.tint} style={{ marginLeft: spacing.sm }}>
                 {t("saved")}
               </Typography>
             </View>
           ) : null}
         </GlassCard>
-      </View>
+      </ScrollView>
 
       <OptionSheet
         visible={sheet === "style"}
@@ -628,57 +613,54 @@ export default function CalculatorScreen() {
 
 const styles = StyleSheet.create({
   scroll: {
-    paddingBottom: 120,
+    paddingBottom: spacing.xxl,
   },
   topRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: spacing.md,
-    marginBottom: spacing.md,
-    gap: spacing.sm,
-  },
-  heroCard: {
-    marginTop: spacing.sm,
-    padding: spacing.lg,
-  },
-  heroRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    marginTop: spacing.lg,
+    marginBottom: spacing.lg,
     gap: spacing.md,
   },
-  metric: {
-    padding: spacing.sm,
-    borderRadius: radius.md,
-    minWidth: 110,
-    borderWidth: 1,
+  heroCard: {
+    marginTop: spacing.md,
+    padding: spacing.lg,
+  },
+  heroMetrics: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  metricBox: {
+    flex: 1,
+  },
+  metricDivider: {
+    width: 1,
+    height: 40,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    marginHorizontal: spacing.lg,
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
-    gap: spacing.sm,
-    marginTop: spacing.sm,
+    gap: spacing.md,
+    marginTop: spacing.md,
   },
-  actions: {
+  actionButtons: {
     flexDirection: "row",
-    gap: spacing.sm,
+    gap: spacing.md,
   },
-  primaryButton: {
+  actionButton: {
     flex: 1,
-    paddingVertical: 14,
-    borderRadius: radius.md,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  secondaryButton: {
-    flex: 1,
-    paddingVertical: 14,
-    borderRadius: radius.md,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.sm,
+    borderRadius: radius.lg,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
+    minHeight: 80,
   },
   footerNote: {
-    marginTop: spacing.md,
+    marginTop: spacing.lg,
   },
   iconButton: {
     width: 44,
@@ -689,36 +671,26 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   pill: {
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.sm,
-    borderRadius: radius.md,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    borderRadius: radius.lg,
     borderWidth: 1,
   },
-  actionBar: {
-    position: "absolute",
-    left: spacing.md,
-    right: spacing.md,
-    bottom: 0,
-  },
   flashRow: {
-    marginTop: spacing.xs,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
   },
   card: {
     width: "100%",
-    maxWidth: 820,
-    alignSelf: "center",
   },
   maxWidth: {
     width: "100%",
-    maxWidth: 820,
-    alignSelf: "center",
   },
   fieldButton: {
     borderWidth: 1,
-    borderRadius: radius.md,
-    padding: spacing.md,
+    borderRadius: radius.lg,
+    padding: spacing.lg,
   },
   resultColumn: {
     minWidth: 200,
@@ -726,27 +698,27 @@ const styles = StyleSheet.create({
   },
   sheetBackdrop: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.35)",
+    backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "flex-end",
   },
   sheet: {
-    marginHorizontal: spacing.md,
-    marginBottom: spacing.lg,
-    borderRadius: radius.lg,
+    marginHorizontal: spacing.lg,
+    marginBottom: spacing.xl,
+    borderRadius: radius.xl,
     borderWidth: 1,
     overflow: "hidden",
   },
   sheetItem: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: "transparent",
     flexDirection: "row",
     alignItems: "center",
-    gap: spacing.sm,
+    gap: spacing.md,
   },
   sheetClose: {
-    padding: spacing.md,
+    padding: spacing.lg,
     alignItems: "center",
     borderTopWidth: StyleSheet.hairlineWidth,
     borderColor: "transparent",
@@ -792,19 +764,19 @@ function FieldButton({
         {
           borderColor: colors.border,
           backgroundColor: colors.card,
-          opacity: pressed ? 0.85 : 1,
+          opacity: pressed ? 0.6 : 1,
         },
       ]}
     >
-      <View style={{ flexDirection: "row", alignItems: "center", gap: spacing.sm }}>
-        <Feather name={icon} size={18} color={colors.muted} />
+      <View style={{ flexDirection: "row", alignItems: "center", gap: spacing.md }}>
+        <Feather name={icon} size={20} color={colors.muted} />
         <View style={{ flex: 1 }}>
           <Typography variant="label" color={colors.muted}>
             {label}
           </Typography>
-          <Typography variant="title">{value}</Typography>
+          <Typography variant="title" style={{ marginTop: 4 }}>{value}</Typography>
         </View>
-        <Feather name="chevron-up" size={18} color={colors.muted} style={{ transform: [{ rotate: "90deg" }] }} />
+        <Feather name="chevron-right" size={20} color={colors.muted} />
       </View>
     </Pressable>
   );
@@ -860,7 +832,7 @@ function OptionSheet({
             },
           ]}
         >
-          <View style={{ padding: spacing.md, borderBottomWidth: StyleSheet.hairlineWidth, borderColor: colors.border }}>
+          <View style={{ padding: spacing.lg, borderBottomWidth: StyleSheet.hairlineWidth, borderColor: colors.border }}>
             <Typography variant="title">{title}</Typography>
           </View>
           {options.map((opt) => {
