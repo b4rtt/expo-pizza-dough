@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useThemeColors } from '@/providers/ThemeProvider';
@@ -8,7 +9,9 @@ export function ScreenBackground({ children }: PropsWithChildren) {
   const { effective, colors } = useThemeColors();
   const isLight = effective === 'light';
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+      edges={['top', 'left', 'right', 'bottom']}>
       <LinearGradient
         colors={
           isLight
@@ -20,7 +23,7 @@ export function ScreenBackground({ children }: PropsWithChildren) {
         style={StyleSheet.absoluteFillObject}
       />
       <View style={styles.overlay}>{children}</View>
-    </View>
+    </SafeAreaView>
   );
 }
 

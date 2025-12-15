@@ -2,28 +2,22 @@ import { Pressable, ScrollView, Share, StyleSheet, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Haptics from "expo-haptics";
 import { Feather } from "@expo/vector-icons";
-import { memo, useState } from "react";
+import { memo } from "react";
 import { useRouter } from "expo-router";
 
 import { spacing } from "@/constants/theme";
 import { GlassCard } from "@/components/GlassCard";
-import { Field } from "@/components/Field";
 import { ScreenBackground } from "@/components/ScreenBackground";
 import { Typography } from "@/components/Typography";
 import { FORM_STORAGE_KEY, calculatePizza, defaultPizzaInput } from "@/lib/pizzaCalculator";
 import { useTranslation } from "@/providers/LocalizationProvider";
 import { useThemeColors } from "@/providers/ThemeProvider";
-import infoSections from "@/constants/infoText";
+import { getInfoSections } from "@/constants/infoText";
 
 export default function TipsScreen() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const router = useRouter();
   const { colors } = useThemeColors();
-  const [miniForm, setMiniForm] = useState({
-    target: "23",
-    flour: "20",
-    room: "22",
-  });
 
   const handleReset = async () => {
     await Haptics.selectionAsync();
@@ -118,41 +112,8 @@ export default function TipsScreen() {
         </GlassCard>
 
         <GlassCard style={{ marginTop: spacing.lg }}>
-          <Typography variant="title">{t("miniCalcTitle")}</Typography>
-          <Typography variant="label" color={colors.muted} style={{ marginTop: 4, marginBottom: spacing.md }}>
-            {t("miniCalcHelp")}
-          </Typography>
-          <View style={{ gap: spacing.sm }}>
-            <Field
-              keyboardType="decimal-pad"
-              label={t("miniCalcDesired")}
-              value={miniForm.target}
-              onChangeText={(text) => setMiniForm((p) => ({ ...p, target: text.replace(/[^0-9.]/g, "") }))}
-            />
-            <Field
-              keyboardType="decimal-pad"
-              label={t("miniCalcFlour")}
-              value={miniForm.flour}
-              onChangeText={(text) => setMiniForm((p) => ({ ...p, flour: text.replace(/[^0-9.]/g, "") }))}
-            />
-            <Field
-              keyboardType="decimal-pad"
-              label={t("miniCalcRoom")}
-              value={miniForm.room}
-              onChangeText={(text) => setMiniForm((p) => ({ ...p, room: text.replace(/[^0-9.]/g, "") }))}
-            />
-          </View>
-          <View style={[styles.miniResult, { borderColor: colors.border, backgroundColor: colors.card }]}>
-            <Typography variant="label" color={colors.muted}>
-              {t("miniCalcResult")}
-            </Typography>
-            <Typography variant="title">{formatWaterTemp(miniForm)} °C</Typography>
-          </View>
-        </GlassCard>
-
-        <GlassCard style={{ marginTop: spacing.lg }}>
           <Typography variant="title">INFO.md</Typography>
-          {infoSections.map((section) => (
+          {getInfoSections(language === 'cs' ? 'cs' : 'en').map((section) => (
             <View key={section.title} style={styles.infoBlock}>
               <Typography variant="subtitle">{section.title}</Typography>
               <Typography variant="body" color={colors.muted}>
@@ -200,15 +161,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     alignItems: "center",
   },
-  miniResult: {
-    marginTop: spacing.md,
-    padding: spacing.md,
-    borderRadius: 14,
-    borderWidth: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
   infoBlock: {
     marginTop: spacing.lg,
     gap: spacing.sm,
@@ -233,11 +185,3 @@ const ButtonLabel = memo(function ButtonLabel({
     </View>
   );
 });
-
-function formatWaterTemp(values: { target: string; flour: string; room: string }) {
-  const target = parseFloat(values.target) || 0;
-  const flour = parseFloat(values.flour) || 0;
-  const room = parseFloat(values.room) || 0;
-  const water = Math.max(0, target * 3 - flour - room);
-  return water.toFixed(1);
-}

@@ -7,8 +7,8 @@
 - [x] Přidat podporu expo glass efektu (`expo-glass-effect`, případně `expo-linear-gradient`) pro karty/tabs.
 - [x] Vyčistit defaultní expo router šablonu (placeholder stránky, barvy, SpaceMono).
 - [x] Nastavit globální typografii (heading/body scale, letter-spacing) a použít Airbnb-like styl.
-- [ ] Oprav safe area view
-- [ ] Odeber minikalkulačku. nedává to smysl
+- [x] Oprav safe area view
+- [x] Odeber minikalkulačku. nedává to smysl
 
 ## Navigace
 
@@ -58,4 +58,4 @@
 - [x] Aktualizovat `app.json` (název, ikona, splash) a assety.
 - [x] Odebrat nepoužité dependency a skripty.
 - [x] Rychlý performance check (memoizace CTA/řádků).
-- [ ] Některé tipy jsou pouze anglicky. Mají se taky překládat
+- [x] Některé tipy jsou pouze anglicky. Mají se taky překládat
