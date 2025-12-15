@@ -3,17 +3,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
 
-import Colors from "@/constants/Colors";
 import { spacing } from "@/constants/theme";
 import { GlassCard } from "@/components/GlassCard";
 import { ScreenBackground } from "@/components/ScreenBackground";
 import { Typography } from "@/components/Typography";
 import { FORM_STORAGE_KEY, calculatePizza, defaultPizzaInput } from "@/lib/pizzaCalculator";
 import { useTranslation } from "@/providers/LocalizationProvider";
+import { useThemeColors } from "@/providers/ThemeProvider";
 
 export default function TipsScreen() {
   const { t } = useTranslation();
   const router = useRouter();
+  const { colors } = useThemeColors();
 
   const handleReset = async () => {
     await Haptics.selectionAsync();
@@ -60,7 +61,7 @@ export default function TipsScreen() {
         <Typography variant="display" style={{ marginTop: spacing.md }}>
           {t("tipsTitle")}
         </Typography>
-        <Typography variant="subtitle" color={Colors.light.muted} style={{ marginTop: 6 }}>
+        <Typography variant="subtitle" color={colors.muted} style={{ marginTop: 6 }}>
           {t("appSubtitle")}
         </Typography>
 
@@ -79,25 +80,34 @@ export default function TipsScreen() {
           <View style={{ flexDirection: "row", gap: spacing.sm, marginTop: spacing.sm }}>
             <Pressable
               onPress={handleShare}
-              style={({ pressed }) => [styles.pill, { opacity: pressed ? 0.7 : 1 }]}
+              style={({ pressed }) => [
+                styles.pill,
+                { opacity: pressed ? 0.7 : 1, borderColor: colors.border },
+              ]}
             >
-              <Typography variant="button" color={Colors.light.tint}>
+              <Typography variant="button" color={colors.tint}>
                 {t("tipShare")}
               </Typography>
             </Pressable>
             <Pressable
               onPress={handleReset}
-              style={({ pressed }) => [styles.pill, { opacity: pressed ? 0.7 : 1 }]}
+              style={({ pressed }) => [
+                styles.pill,
+                { opacity: pressed ? 0.7 : 1, borderColor: colors.border },
+              ]}
             >
-              <Typography variant="button" color={Colors.light.text}>
+              <Typography variant="button" color={colors.text}>
                 {t("tipReset")}
               </Typography>
             </Pressable>
             <Pressable
               onPress={() => router.push("/recipes")}
-              style={({ pressed }) => [styles.pill, { opacity: pressed ? 0.7 : 1 }]}
+              style={({ pressed }) => [
+                styles.pill,
+                { opacity: pressed ? 0.7 : 1, borderColor: colors.border },
+              ]}
             >
-              <Typography variant="button" color={Colors.light.text}>
+              <Typography variant="button" color={colors.text}>
                 {t("tipSaved")}
               </Typography>
             </Pressable>
@@ -111,10 +121,11 @@ export default function TipsScreen() {
 }
 
 function TipBlock({ title, body }: { title: string; body: string }) {
+  const { colors } = useThemeColors();
   return (
     <View style={{ gap: 6 }}>
       <Typography variant="title">{title}</Typography>
-      <Typography variant="body" color={Colors.light.muted}>
+      <Typography variant="body" color={colors.muted}>
         {body}
       </Typography>
     </View>
@@ -122,7 +133,8 @@ function TipBlock({ title, body }: { title: string; body: string }) {
 }
 
 function Divider() {
-  return <View style={styles.divider} />;
+  const { colors } = useThemeColors();
+  return <View style={[styles.divider, { backgroundColor: colors.border }]} />;
 }
 
 const styles = StyleSheet.create({
@@ -131,13 +143,11 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: Colors.light.border,
     marginVertical: spacing.md,
   },
   pill: {
     flex: 1,
     borderWidth: 1,
-    borderColor: Colors.light.border,
     borderRadius: 12,
     paddingVertical: 12,
     alignItems: "center",

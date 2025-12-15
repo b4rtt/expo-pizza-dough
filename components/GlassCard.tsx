@@ -1,6 +1,6 @@
 import { GlassView, isLiquidGlassAvailable } from "expo-glass-effect";
-import { PropsWithChildren } from "react";
-import { Platform, StyleSheet, View, ViewStyle } from "react-native";
+import { PropsWithChildren, useEffect, useRef } from "react";
+import { Animated, Platform, StyleSheet, View, ViewStyle } from "react-native";
 
 import { radius } from "@/constants/theme";
 import { useThemeColors } from "@/providers/ThemeProvider";
@@ -16,6 +16,16 @@ export function GlassCard({ children, style, intensity = 60 }: Props) {
   const clampedIntensity = Math.max(0, Math.min(100, intensity));
   const tintOpacity = 0.08 + (clampedIntensity / 100) * 0.22;
   const tintColor = `rgba(0,0,0,${tintOpacity.toFixed(3)})`;
+  const fade = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(fade, {
+      toValue: 1,
+      duration: 260,
+      delay: 50,
+      useNativeDriver: true,
+    }).start();
+  }, [fade]);
 
   if (!canUseGlass) {
     return (
@@ -29,7 +39,7 @@ export function GlassCard({ children, style, intensity = 60 }: Props) {
           style,
         ]}
       >
-        {children}
+        <Animated.View style={{ opacity: fade }}>{children}</Animated.View>
       </View>
     );
   }
@@ -47,7 +57,7 @@ export function GlassCard({ children, style, intensity = 60 }: Props) {
         style,
       ]}
     >
-      {children}
+      <Animated.View style={{ opacity: fade }}>{children}</Animated.View>
     </GlassView>
   );
 }

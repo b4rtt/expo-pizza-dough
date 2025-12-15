@@ -42,13 +42,13 @@
 ## Nastavení / další
 
 - [x] Přepínač jazyků (cs/en).
-- [ ] Přepínač motivu (pokud bude tmavý/světlý variant).
+- [x] Přepínač motivu (světlý/tmavý + systém).
 - [x] Info o verzi / link na původní recept.
 
 ## Styl & efekty
 
 - [x] Vrstvené glass panely (blur, průsvitná mřížka, odlesky), gradientní pozadí inspirované Airbnb.
-- [ ] Animace vstupů a listů (Reanimated/Worklets) – jemné fade/slide.
+- [x] Animace vstupů a listů (jemný fade na kartách).
 - [ ] Ikony (např. tab i CTA) sjednotit s novým stylem.
 
 ## Release checklist

@@ -2,14 +2,13 @@ import { PropsWithChildren } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import Colors from '@/constants/Colors';
 import { useThemeColors } from '@/providers/ThemeProvider';
 
 export function ScreenBackground({ children }: PropsWithChildren) {
-  const { effective } = useThemeColors();
+  const { effective, colors } = useThemeColors();
   const isLight = effective === 'light';
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <LinearGradient
         colors={
           isLight
@@ -28,7 +27,6 @@ export function ScreenBackground({ children }: PropsWithChildren) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.light.background,
   },
   overlay: {
     flex: 1,

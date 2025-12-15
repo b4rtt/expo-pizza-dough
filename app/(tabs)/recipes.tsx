@@ -4,17 +4,18 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
 
-import Colors from '@/constants/Colors';
 import { radius, spacing } from '@/constants/theme';
 import { GlassCard } from '@/components/GlassCard';
 import { ScreenBackground } from '@/components/ScreenBackground';
 import { Typography } from '@/components/Typography';
 import { SAVED_RECIPES_KEY, SavedRecipe } from '@/lib/pizzaCalculator';
 import { useTranslation } from '@/providers/LocalizationProvider';
+import { useThemeColors } from '@/providers/ThemeProvider';
 
 export default function RecipesScreen() {
   const { t, language } = useTranslation();
   const router = useRouter();
+  const { colors } = useThemeColors();
   const [items, setItems] = useState<SavedRecipe[]>([]);
 
   const formatter = useMemo(
@@ -84,51 +85,55 @@ export default function RecipesScreen() {
       <View style={styles.cardTop}>
         <View style={{ flex: 1 }}>
           <Typography variant="title">{item.title}</Typography>
-          <Typography variant="label" color={Colors.light.muted} style={{ marginTop: 4 }}>
+          <Typography variant="label" color={colors.muted} style={{ marginTop: 4 }}>
             {t(`style_${item.result.style.replace('-', '_')}`)} • {formatter.format(item.result.totalWeight)} g
           </Typography>
         </View>
         <View style={styles.actions}>
-          <Pressable onPress={() => shareRecipe(item)} style={({ pressed }) => [styles.pill, { opacity: pressed ? 0.7 : 1 }]}>
-            <Typography variant="label" color={Colors.light.text}>
+          <Pressable
+            onPress={() => shareRecipe(item)}
+            style={({ pressed }) => [styles.pill, { opacity: pressed ? 0.7 : 1, borderColor: colors.border }]}>
+            <Typography variant="label" color={colors.text}>
               {t('share')}
             </Typography>
           </Pressable>
-          <Pressable onPress={() => deleteRecipe(item.id)} style={({ pressed }) => [styles.pill, { opacity: pressed ? 0.7 : 1 }]}>
-            <Typography variant="label" color={Colors.light.tint}>
+          <Pressable
+            onPress={() => deleteRecipe(item.id)}
+            style={({ pressed }) => [styles.pill, { opacity: pressed ? 0.7 : 1, borderColor: colors.tint }]}>
+            <Typography variant="label" color={colors.tint}>
               {t('delete')}
             </Typography>
           </Pressable>
         </View>
       </View>
       <View style={styles.row}>
-        <Typography variant="body" color={Colors.light.muted}>
+        <Typography variant="body" color={colors.muted}>
           {t('flour')}
         </Typography>
         <Typography variant="body">{formatter.format(item.result.flour)} g</Typography>
       </View>
       {item.result.semolina ? (
         <View style={styles.row}>
-          <Typography variant="body" color={Colors.light.muted}>
+          <Typography variant="body" color={colors.muted}>
             {t('semolina')}
           </Typography>
           <Typography variant="body">{formatter.format(item.result.semolina)} g</Typography>
         </View>
       ) : null}
       <View style={styles.row}>
-        <Typography variant="body" color={Colors.light.muted}>
+        <Typography variant="body" color={colors.muted}>
           {t('water')}
         </Typography>
         <Typography variant="body">{formatter.format(item.result.water)} g</Typography>
       </View>
       <View style={styles.row}>
-        <Typography variant="body" color={Colors.light.muted}>
+        <Typography variant="body" color={colors.muted}>
           {t('salt')}
         </Typography>
         <Typography variant="body">{formatter.format(item.result.salt)} g</Typography>
       </View>
       <View style={styles.row}>
-        <Typography variant="body" color={Colors.light.muted}>
+        <Typography variant="body" color={colors.muted}>
           {t('yeast')}
         </Typography>
         <Typography variant="body">{formatter.format(item.result.yeast)} g</Typography>
@@ -141,8 +146,11 @@ export default function RecipesScreen() {
       <Typography variant="title">{t('savedEmpty')}</Typography>
       <Pressable
         onPress={() => router.push('/')}
-        style={({ pressed }) => [styles.pill, { marginTop: spacing.md, opacity: pressed ? 0.7 : 1 }]}>
-        <Typography variant="label" color={Colors.light.tint}>
+        style={({ pressed }) => [
+          styles.pill,
+          { marginTop: spacing.md, opacity: pressed ? 0.7 : 1, borderColor: colors.border },
+        ]}>
+        <Typography variant="label" color={colors.tint}>
           {t('savedGoCalc')}
         </Typography>
       </Pressable>
@@ -158,7 +166,7 @@ export default function RecipesScreen() {
         ListHeaderComponent={
           <View style={{ marginBottom: spacing.md }}>
             <Typography variant="display">{t('savedRecipes')}</Typography>
-            <Typography variant="subtitle" color={Colors.light.muted} style={{ marginTop: 6 }}>
+            <Typography variant="subtitle" color={colors.muted} style={{ marginTop: 6 }}>
               {t('appSubtitle')}
             </Typography>
           </View>
@@ -196,7 +204,6 @@ const styles = StyleSheet.create({
   },
   pill: {
     borderWidth: 1,
-    borderColor: Colors.light.border,
     borderRadius: radius.md,
     paddingHorizontal: spacing.sm,
     paddingVertical: 8,

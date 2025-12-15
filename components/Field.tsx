@@ -13,6 +13,11 @@ type Props = TextInputProps & {
 
 export const Field = forwardRef<TextInput, Props>(({ label, suffix, helper, style, ...rest }, ref) => {
   const { colors } = useThemeColors();
+  const dynamicInputStyle = {
+    borderColor: colors.border,
+    backgroundColor: colors.card,
+    color: colors.text,
+  };
   return (
     <View style={styles.wrapper}>
       <View style={styles.labelRow}>
@@ -28,7 +33,7 @@ export const Field = forwardRef<TextInput, Props>(({ label, suffix, helper, styl
       <View style={styles.inputRow}>
         <TextInput
           ref={ref}
-          style={[styles.input, style]}
+          style={[styles.input, dynamicInputStyle, style]}
           placeholderTextColor={colors.muted}
           {...rest}
         />
@@ -62,9 +67,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     borderRadius: radius.md,
     borderWidth: 1,
-    borderColor: '#1E2436',
-    backgroundColor: '#0F172A',
-    color: '#E7ECF7',
+    borderColor: 'transparent',
+    backgroundColor: 'transparent',
+    color: '#000',
     fontFamily: typography.medium,
     fontSize: 16,
   },

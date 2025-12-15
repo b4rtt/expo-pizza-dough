@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import Colors from '@/constants/Colors';
 import { radius, spacing, typography } from '@/constants/theme';
+import { useThemeColors } from '@/providers/ThemeProvider';
 import { Typography } from './Typography';
 
 type Option<T extends string> = { label: string; value: T };
@@ -10,11 +10,13 @@ type Props<T extends string> = {
   options: Option<T>[];
   value: T;
   onChange: (value: T) => void;
+  fullWidth?: boolean;
 };
 
-export function SegmentedControl<T extends string>({ options, value, onChange }: Props<T>) {
+export function SegmentedControl<T extends string>({ options, value, onChange, fullWidth }: Props<T>) {
+  const { colors } = useThemeColors();
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, fullWidth && { width: '100%' }]}>
       {options.map((opt) => {
         const active = opt.value === value;
         return (
@@ -24,14 +26,14 @@ export function SegmentedControl<T extends string>({ options, value, onChange }:
             style={({ pressed }) => [
               styles.pill,
               {
-                backgroundColor: active ? Colors.light.tint : 'transparent',
-                borderColor: active ? Colors.light.tint : Colors.light.border,
+                backgroundColor: active ? colors.tint : 'transparent',
+                borderColor: active ? colors.tint : colors.border,
                 opacity: pressed ? 0.9 : 1,
               },
             ]}>
             <Typography
               variant="label"
-              color={active ? '#0A1024' : Colors.light.text}
+              color={active ? '#0A1024' : colors.text}
               style={{ fontFamily: active ? typography.bold : typography.medium }}>
               {opt.label}
             </Typography>

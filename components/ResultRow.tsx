@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
-import Colors from '@/constants/Colors';
 import { typography } from '@/constants/theme';
+import { useThemeColors } from '@/providers/ThemeProvider';
 import { Typography } from './Typography';
 
 type Props = {
@@ -12,13 +12,14 @@ type Props = {
 };
 
 export function ResultRow({ label, value, unit = 'g', formatter }: Props) {
+  const { colors } = useThemeColors();
   const displayValue = formatter ? formatter(value) : value.toString();
   return (
-    <View style={styles.row}>
-      <Typography variant="body" style={styles.label} color={Colors.light.muted}>
+    <View style={[styles.row, { borderBottomColor: colors.border }]}>
+      <Typography variant="body" style={styles.label} color={colors.muted}>
         {label}
       </Typography>
-      <Typography variant="body" style={styles.value}>
+      <Typography variant="body" style={styles.value} color={colors.text}>
         {displayValue}
         {unit ? ` ${unit}` : ''}
       </Typography>
@@ -33,7 +34,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.light.border,
   },
   label: {
     fontFamily: typography.medium,

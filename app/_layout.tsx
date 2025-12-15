@@ -54,7 +54,13 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <AppThemeProvider>
+      <LocalizationProvider>
+        <RootLayoutNav />
+      </LocalizationProvider>
+    </AppThemeProvider>
+  );
 }
 
 function RootLayoutNav() {
@@ -75,23 +81,19 @@ function RootLayoutNav() {
   );
 
   return (
-    <AppThemeProvider>
-      <LocalizationProvider>
-        <ThemeProvider value={navTheme}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="settings"
-              options={{
-                presentation: 'modal',
-                headerTitle: '',
-                headerTransparent: true,
-                headerTintColor: colors.text,
-              }}
-            />
-          </Stack>
-        </ThemeProvider>
-      </LocalizationProvider>
-    </AppThemeProvider>
+    <ThemeProvider value={navTheme}>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="settings"
+          options={{
+            presentation: 'modal',
+            headerTitle: '',
+            headerTransparent: true,
+            headerTintColor: colors.text,
+          }}
+        />
+      </Stack>
+    </ThemeProvider>
   );
 }

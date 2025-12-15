@@ -6,7 +6,6 @@ import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
-import Colors from '@/constants/Colors';
 import { radius, spacing, typography } from '@/constants/theme';
 import { Field } from '@/components/Field';
 import { GlassCard } from '@/components/GlassCard';
@@ -24,6 +23,7 @@ import {
   recipeDefaults,
 } from '@/lib/pizzaCalculator';
 import { useTranslation } from '@/providers/LocalizationProvider';
+import { useThemeColors } from '@/providers/ThemeProvider';
 
 type FormState = {
   style: PizzaStyle;
@@ -37,6 +37,7 @@ const yeastOptions: YeastType[] = ['fresh', 'dry'];
 
 export default function CalculatorScreen() {
   const { t, language } = useTranslation();
+  const { colors } = useThemeColors();
   const router = useRouter();
   const [form, setForm] = useState<FormState>({
     style: defaultPizzaInput.style,
@@ -178,35 +179,46 @@ export default function CalculatorScreen() {
         <View style={styles.topRow}>
           <View style={{ flex: 1 }}>
             <Typography variant="display">{t('appTitle')}</Typography>
-            <Typography variant="subtitle" color={Colors.light.muted} style={{ marginTop: 4 }}>
+            <Typography variant="subtitle" color={colors.muted} style={{ marginTop: 4 }}>
               {t('appSubtitle')}
             </Typography>
           </View>
           <Pressable
             onPress={() => router.push('/settings')}
-            style={({ pressed }) => [styles.iconButton, { opacity: pressed ? 0.7 : 1 }]}>
-            <Feather name="settings" size={22} color={Colors.light.text} />
+            style={({ pressed }) => [
+              styles.iconButton,
+              { opacity: pressed ? 0.7 : 1, backgroundColor: colors.card, borderColor: colors.border },
+            ]}>
+            <Feather name="settings" size={22} color={colors.text} />
           </Pressable>
         </View>
 
         <GlassCard style={styles.heroCard} intensity={85}>
           <View style={styles.heroRow}>
             <View style={{ flex: 1 }}>
-              <Typography variant="label" color={Colors.light.muted}>
+              <Typography variant="label" color={colors.muted}>
                 {t('summaryTitle')}
               </Typography>
               <Typography variant="title" style={{ marginTop: 4 }}>
                 {t(`style_${result.style.replace('-', '_')}`)}
               </Typography>
             </View>
-            <View style={styles.metric}>
-              <Typography variant="label" color={Colors.light.muted}>
+            <View
+              style={[
+                styles.metric,
+                { backgroundColor: colors.glassSurface, borderColor: colors.glassStroke },
+              ]}>
+              <Typography variant="label" color={colors.muted}>
                 {t('totalWeight')}
               </Typography>
               <Typography variant="title">{formatWeight(result.totalWeight)} g</Typography>
             </View>
-            <View style={styles.metric}>
-              <Typography variant="label" color={Colors.light.muted}>
+            <View
+              style={[
+                styles.metric,
+                { backgroundColor: colors.glassSurface, borderColor: colors.glassStroke },
+              ]}>
+              <Typography variant="label" color={colors.muted}>
                 {t('hydration')}
               </Typography>
               <Typography variant="title">{result.hydration}%</Typography>
@@ -215,7 +227,7 @@ export default function CalculatorScreen() {
         </GlassCard>
 
         <GlassCard style={{ marginTop: spacing.md }}>
-          <Typography variant="label" color={Colors.light.muted} style={{ marginBottom: 8 }}>
+          <Typography variant="label" color={colors.muted} style={{ marginBottom: 8 }}>
             {t('styleLabel')}
           </Typography>
           <SegmentedControl
@@ -229,7 +241,7 @@ export default function CalculatorScreen() {
 
           <View style={styles.row}>
             <View style={{ flex: 1 }}>
-              <Typography variant="label" color={Colors.light.muted} style={{ marginBottom: 8 }}>
+              <Typography variant="label" color={colors.muted} style={{ marginBottom: 8 }}>
                 {t('yeastLabel')}
               </Typography>
               <SegmentedControl
@@ -270,9 +282,9 @@ export default function CalculatorScreen() {
               onPress={resetForm}
               style={({ pressed }) => [
                 styles.secondaryButton,
-                { opacity: pressed ? 0.7 : 1, borderColor: Colors.light.border },
+                { opacity: pressed ? 0.7 : 1, borderColor: colors.border },
               ]}>
-              <Typography variant="button" color={Colors.light.text}>
+              <Typography variant="button" color={colors.text}>
                 {t('reset')}
               </Typography>
             </Pressable>
@@ -280,7 +292,7 @@ export default function CalculatorScreen() {
               onPress={handleShare}
               style={({ pressed }) => [
                 styles.primaryButton,
-                { opacity: pressed ? 0.85 : 1, backgroundColor: Colors.light.tint },
+                { opacity: pressed ? 0.85 : 1, backgroundColor: colors.tint },
               ]}>
               <Typography variant="button" color="#0A1024">
                 {t('share')}
@@ -290,9 +302,9 @@ export default function CalculatorScreen() {
               onPress={saveRecipe}
               style={({ pressed }) => [
                 styles.secondaryButton,
-                { opacity: pressed ? 0.7 : 1, borderColor: Colors.light.tint },
+                { opacity: pressed ? 0.7 : 1, borderColor: colors.tint },
               ]}>
-              <Typography variant="button" color={Colors.light.tint}>
+              <Typography variant="button" color={colors.tint}>
                 {t('save')}
               </Typography>
             </Pressable>
@@ -317,7 +329,7 @@ export default function CalculatorScreen() {
             <ResultRow label={t('oil')} value={result.oil} formatter={formatWeight} />
           ) : null}
           <View style={styles.footerNote}>
-            <Typography variant="label" color={Colors.light.muted}>
+            <Typography variant="label" color={colors.muted}>
               {t('footerCredit')}
             </Typography>
           </View>
@@ -350,10 +362,8 @@ const styles = StyleSheet.create({
   metric: {
     padding: spacing.sm,
     borderRadius: radius.md,
-    backgroundColor: 'rgba(255,255,255,0.06)',
     minWidth: 110,
     borderWidth: 1,
-    borderColor: Colors.light.glassStroke,
   },
   row: {
     flexDirection: 'row',
@@ -388,10 +398,8 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 12,
-    backgroundColor: Colors.light.card,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: Colors.light.border,
   },
 });
