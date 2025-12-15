@@ -1,7 +1,8 @@
-import { Feather } from '@expo/vector-icons';
+import { useEffect, useRef } from 'react';
+import { Animated, Platform, StyleSheet, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
-import { Platform, StyleSheet, View } from 'react-native';
 
 import Colors from '@/constants/Colors';
 import { useTranslation } from '@/providers/LocalizationProvider';
@@ -31,7 +32,12 @@ export default function TabLayout() {
           title: t('tabCalculator'),
           tabBarLabel: t('tabCalculator'),
           tabBarIcon: ({ color, focused }) => (
-            <Feather name={focused ? 'pie-chart' : 'pie-chart'} size={22} color={color} />
+            <TabIcon
+              color={color}
+              focused={focused}
+              activeName="calculator"
+              inactiveName="calculator-outline"
+            />
           ),
         }}
       />
@@ -40,10 +46,40 @@ export default function TabLayout() {
         options={{
           title: t('tabTips'),
           tabBarLabel: t('tabTips'),
-          tabBarIcon: ({ color }) => <Feather name="wind" size={22} color={color} />,
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon color={color} focused={focused} activeName="bulb" inactiveName="bulb-outline" />
+          ),
         }}
       />
     </Tabs>
+  );
+}
+
+type TabIconProps = {
+  color: string;
+  focused: boolean;
+  activeName: keyof typeof Ionicons.glyphMap;
+  inactiveName: keyof typeof Ionicons.glyphMap;
+};
+
+function TabIcon({ color, focused, activeName, inactiveName }: TabIconProps) {
+  const scale = useRef(new Animated.Value(focused ? 1.05 : 0.95)).current;
+
+  useEffect(() => {
+    Animated.spring(scale, {
+      toValue: focused ? 1.05 : 0.95,
+      useNativeDriver: true,
+      friction: 9,
+      tension: 120,
+    }).start();
+  }, [focused, scale]);
+
+  const name = focused ? activeName : inactiveName;
+
+  return (
+    <Animated.View style={{ transform: [{ scale }] }}>
+      <Ionicons name={name} size={24} color={color} />
+    </Animated.View>
   );
 }
 

@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Linking, ScrollView, StyleSheet, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { useNavigation } from 'expo-router';
+import Constants from 'expo-constants';
 
 import Colors from '@/constants/Colors';
 import { spacing } from '@/constants/theme';
@@ -17,6 +18,7 @@ type LanguageOption = Language | 'device';
 export default function SettingsScreen() {
   const { t, preference, setLanguage, useDeviceLanguage } = useTranslation();
   const navigation = useNavigation();
+  const version = Constants.expoConfig?.version ?? '1.0.0';
 
   useEffect(() => {
     navigation.setOptions({
@@ -59,6 +61,32 @@ export default function SettingsScreen() {
           <SegmentedControl options={options} value={preference} onChange={handleChange} />
         </GlassCard>
 
+        <GlassCard style={{ marginTop: spacing.md }}>
+          <Typography variant="title">{t('settingsAbout')}</Typography>
+          <Typography variant="body" color={Colors.light.muted} style={{ marginTop: 6 }}>
+            {t('footerCredit')}
+          </Typography>
+          <View style={{ marginTop: spacing.md, gap: 8 }}>
+            <View style={styles.metaRow}>
+              <Typography variant="label" color={Colors.light.muted}>
+                {t('settingsVersion')}
+              </Typography>
+              <Typography variant="label">{version}</Typography>
+            </View>
+            <View style={styles.metaRow}>
+              <Typography variant="label" color={Colors.light.muted}>
+                {t('settingsOriginal')}
+              </Typography>
+              <Typography
+                variant="label"
+                style={styles.link}
+                onPress={() => Linking.openURL('https://pizza.trojanischeresel.de/')}>
+                {t('settingsOpenLink')}
+              </Typography>
+            </View>
+          </View>
+        </GlassCard>
+
         <View style={{ height: 120 }} />
       </ScrollView>
     </ScreenBackground>
@@ -68,5 +96,13 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   scroll: {
     paddingBottom: 120,
+  },
+  metaRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  link: {
+    color: Colors.light.tint,
   },
 });

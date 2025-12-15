@@ -10,7 +10,7 @@
 ## Navigace
 - [x] Implementovat native glass bottom tabs (expo-router native tabs) se dvěma hlavními záložkami: `Kalkulačka`, `Tipy`.
 - [x] Přidat třetí stack/screen `Nastavení` (přístup z ikony/CTA) pro jazyk + motiv.
-- [ ] Přidat tab icons (outline/filled) a animaci aktivního tab (scale/opacity).
+- [x] Přidat tab icons (outline/filled) a animaci aktivního tab (scale/opacity).
 
 ## Lokalizace
 - [x] Detekce jazyka dle zařízení, fallback na angličtinu, default čeština.
@@ -23,7 +23,7 @@
 - [x] Validace vstupů (min/max, jen čísla), chybové stavy a haptika.
 - [x] Realtime přepočet a render výsledků.
 - [x] UI: glass hero se souhrnem, sekce ingrediencí (cards), drobné mikroanimace, CTA „Zkopírovat / Sdílet“.
-- [ ] Možnost uložit naposledy použitou konfiguraci (AsyncStorage).
+- [x] Možnost uložit naposledy použitou konfiguraci (AsyncStorage).
 
 ## Tipy / postup
 - [x] Strukturovat obsah: hydratace, fermentace, pečení (krátké bloky), případně odkazy na video.
@@ -33,7 +33,7 @@
 ## Nastavení / další
 - [x] Přepínač jazyků (cs/en).
 - [ ] Přepínač motivu (pokud bude tmavý/světlý variant).
-- [ ] Info o verzi / link na původní recept.
+- [x] Info o verzi / link na původní recept.
 
 ## Styl & efekty
 - [x] Vrstvené glass panely (blur, průsvitná mřížka, odlesky), gradientní pozadí inspirované Airbnb.

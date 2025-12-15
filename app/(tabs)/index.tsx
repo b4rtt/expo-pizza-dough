@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ScrollView, Share, StyleSheet, View, Pressable } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Colors from '@/constants/Colors';
 import { radius, spacing, typography } from '@/constants/theme';
@@ -30,6 +31,7 @@ type FormState = {
 
 const styleOptions: PizzaStyle[] = ['neapolitan', 'new-york', 'sicilian', 'pan'];
 const yeastOptions: YeastType[] = ['fresh', 'dry'];
+const STORAGE_KEY = '@pizza-form-v1';
 
 export default function CalculatorScreen() {
   const { t, language } = useTranslation();
@@ -40,6 +42,42 @@ export default function CalculatorScreen() {
     number: String(defaultPizzaInput.number),
     gramsPerPizza: String(defaultPizzaInput.gramsPerPizza),
   });
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    const hydrate = async () => {
+      try {
+        const raw = await AsyncStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          setHydrated(true);
+          return;
+        }
+        const parsed = JSON.parse(raw) as Partial<FormState>;
+        const style = styleOptions.includes(parsed.style as PizzaStyle)
+          ? (parsed.style as PizzaStyle)
+          : defaultPizzaInput.style;
+        const yeastType = yeastOptions.includes(parsed.yeastType as YeastType)
+          ? (parsed.yeastType as YeastType)
+          : defaultPizzaInput.yeastType;
+        const number = parsed.number && /^\d+$/.test(parsed.number) ? parsed.number : `${defaultPizzaInput.number}`;
+        const gramsPerPizza =
+          parsed.gramsPerPizza && /^\d+$/.test(parsed.gramsPerPizza)
+            ? parsed.gramsPerPizza
+            : `${defaultPizzaInput.gramsPerPizza}`;
+        setForm({ style, yeastType, number, gramsPerPizza });
+      } catch (_) {
+        // ignore hydration errors
+      } finally {
+        setHydrated(true);
+      }
+    };
+    hydrate();
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(form)).catch(() => undefined);
+  }, [form, hydrated]);
 
   const parsed = {
     style: form.style,
