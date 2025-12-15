@@ -1,18 +1,22 @@
-import { useEffect, useRef } from 'react';
-import { Animated, Platform, StyleSheet, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
-import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
+import { Ionicons } from "@expo/vector-icons";
+import { GlassView, isLiquidGlassAvailable } from "expo-glass-effect";
+import { Tabs } from "expo-router";
+import { useEffect, useRef } from "react";
+import { Animated, Platform, StyleSheet, View } from "react-native";
 
-import Colors from '@/constants/Colors';
-import { useTranslation } from '@/providers/LocalizationProvider';
+import Colors from "@/constants/Colors";
+import { useTranslation } from "@/providers/LocalizationProvider";
 
 export default function TabLayout() {
   const { t } = useTranslation();
-  const glassAvailable = isLiquidGlassAvailable() && Platform.OS === 'ios';
+  const glassAvailable = isLiquidGlassAvailable() && Platform.OS === "ios";
 
   const glassBackground = () => (
-    <GlassView blurTint="systemChromeMaterialDark" intensity={70} style={StyleSheet.absoluteFill}>
+    <GlassView
+      glassEffectStyle="regular"
+      tintColor="rgba(0,0,0,0.25)"
+      style={StyleSheet.absoluteFill}
+    >
       <View style={styles.barOverlay} />
     </GlassView>
   );
@@ -25,12 +29,13 @@ export default function TabLayout() {
         tabBarStyle: [styles.tabBar, !glassAvailable && styles.tabBarFallback],
         headerShown: false,
         tabBarBackground: glassAvailable ? glassBackground : undefined,
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: t('tabCalculator'),
-          tabBarLabel: t('tabCalculator'),
+          title: t("tabCalculator"),
+          tabBarLabel: t("tabCalculator"),
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               color={color}
@@ -44,10 +49,15 @@ export default function TabLayout() {
       <Tabs.Screen
         name="tips"
         options={{
-          title: t('tabTips'),
-          tabBarLabel: t('tabTips'),
+          title: t("tabTips"),
+          tabBarLabel: t("tabTips"),
           tabBarIcon: ({ color, focused }) => (
-            <TabIcon color={color} focused={focused} activeName="bulb" inactiveName="bulb-outline" />
+            <TabIcon
+              color={color}
+              focused={focused}
+              activeName="bulb"
+              inactiveName="bulb-outline"
+            />
           ),
         }}
       />
@@ -85,14 +95,14 @@ function TabIcon({ color, focused, activeName, inactiveName }: TabIconProps) {
 
 const styles = StyleSheet.create({
   tabBar: {
-    position: 'absolute',
+    position: "absolute",
     left: 16,
     right: 16,
     bottom: 16,
     borderRadius: 22,
     paddingHorizontal: 6,
     paddingVertical: 8,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     borderColor: Colors.light.glassStroke,
     borderWidth: 1,
   },
