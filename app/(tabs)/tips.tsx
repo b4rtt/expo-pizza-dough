@@ -2,7 +2,7 @@ import { Pressable, ScrollView, Share, StyleSheet, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Haptics from "expo-haptics";
 import { Feather } from "@expo/vector-icons";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useRouter } from "expo-router";
 
 import { spacing } from "@/constants/theme";
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function ButtonLabel({
+const ButtonLabel = memo(function ButtonLabel({
   icon,
   text,
   color,
@@ -232,7 +232,7 @@ function ButtonLabel({
       </Typography>
     </View>
   );
-}
+});
 
 function formatWaterTemp(values: { target: string; flour: string; room: string }) {
   const target = parseFloat(values.target) || 0;

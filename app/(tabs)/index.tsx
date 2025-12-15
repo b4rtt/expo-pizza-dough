@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { ScrollView, Share, StyleSheet, View, Pressable } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { Feather } from '@expo/vector-icons';
@@ -443,7 +443,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function ButtonLabel({
+const ButtonLabel = memo(function ButtonLabel({
   icon,
   text,
   color,
@@ -460,4 +460,4 @@ function ButtonLabel({
       </Typography>
     </View>
   );
-}
+});

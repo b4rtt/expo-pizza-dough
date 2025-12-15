@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { typography } from '@/constants/theme';
@@ -11,7 +12,7 @@ type Props = {
   formatter?: (value: number) => string;
 };
 
-export function ResultRow({ label, value, unit = 'g', formatter }: Props) {
+export const ResultRow = memo(function ResultRow({ label, value, unit = 'g', formatter }: Props) {
   const { colors } = useThemeColors();
   const displayValue = formatter ? formatter(value) : value.toString();
   return (
@@ -25,7 +26,7 @@ export function ResultRow({ label, value, unit = 'g', formatter }: Props) {
       </Typography>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   row: {
