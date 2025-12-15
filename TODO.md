@@ -55,6 +55,7 @@
 
 ## Release checklist
 
-- [ ] Aktualizovat `app.json` (název, ikona, splash) a assety.
-- [ ] Odebrat nepoužité dependency a skripty.
+- [x] Aktualizovat `app.json` (název, ikona, splash) a assety.
+- [x] Odebrat nepoužité dependency a skripty.
 - [ ] Rychlý performance check (re-rendering, memoizace).
+- [ ] Některé tipy jsou pouze anglicky. Mají se taky překládat

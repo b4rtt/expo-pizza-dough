@@ -329,9 +329,7 @@ export default function CalculatorScreen() {
                 styles.secondaryButton,
                 { opacity: pressed ? 0.7 : 1, borderColor: colors.border },
               ]}>
-              <Typography variant="button" color={colors.text}>
-                {t('reset')}
-              </Typography>
+              <ButtonLabel icon="rotate-ccw" text={t('reset')} color={colors.text} />
             </Pressable>
             <Pressable
               onPress={handleShare}
@@ -339,9 +337,7 @@ export default function CalculatorScreen() {
                 styles.primaryButton,
                 { opacity: pressed ? 0.85 : 1, backgroundColor: colors.tint },
               ]}>
-              <Typography variant="button" color="#0A1024">
-                {t('share')}
-              </Typography>
+              <ButtonLabel icon="share-2" text={t('share')} color="#0A1024" />
             </Pressable>
             <Pressable
               onPress={saveRecipe}
@@ -349,9 +345,7 @@ export default function CalculatorScreen() {
                 styles.secondaryButton,
                 { opacity: pressed ? 0.7 : 1, borderColor: colors.tint },
               ]}>
-              <Typography variant="button" color={colors.tint}>
-                {t('save')}
-              </Typography>
+              <ButtonLabel icon="bookmark" text={t('save')} color={colors.tint} />
             </Pressable>
           </View>
         </GlassCard>
@@ -448,3 +442,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
 });
+
+function ButtonLabel({
+  icon,
+  text,
+  color,
+}: {
+  icon: keyof typeof Feather.glyphMap;
+  text: string;
+  color: string;
+}) {
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+      <Feather name={icon} size={16} color={color} />
+      <Typography variant="button" color={color}>
+        {text}
+      </Typography>
+    </View>
+  );
+}
