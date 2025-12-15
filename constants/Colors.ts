@@ -1,19 +1,39 @@
-const tintColorLight = '#2f95dc';
-const tintColorDark = '#fff';
+const palette = {
+  primary: '#FF5A5F',
+  primaryStrong: '#F2484E',
+  secondary: '#3EE0B1',
+  background: '#0C1224',
+  card: '#0F172A',
+  text: '#E7ECF7',
+  muted: '#A9B4C7',
+  border: '#1E2436',
+  glassStroke: 'rgba(255, 255, 255, 0.12)',
+  glassSurface: 'rgba(255, 255, 255, 0.08)',
+};
 
 export default {
   light: {
-    text: '#000',
-    background: '#fff',
-    tint: tintColorLight,
-    tabIconDefault: '#ccc',
-    tabIconSelected: tintColorLight,
+    text: palette.text,
+    background: palette.background,
+    tint: palette.primary,
+    tabIconDefault: palette.muted,
+    tabIconSelected: palette.primary,
+    border: palette.border,
+    card: palette.card,
+    glassStroke: palette.glassStroke,
+    glassSurface: palette.glassSurface,
+    secondary: palette.secondary,
   },
   dark: {
-    text: '#fff',
-    background: '#000',
-    tint: tintColorDark,
-    tabIconDefault: '#ccc',
-    tabIconSelected: tintColorDark,
+    text: palette.text,
+    background: palette.background,
+    tint: palette.primary,
+    tabIconDefault: palette.muted,
+    tabIconSelected: palette.primary,
+    border: palette.border,
+    card: palette.card,
+    glassStroke: palette.glassStroke,
+    glassSurface: palette.glassSurface,
+    secondary: palette.secondary,
   },
 };

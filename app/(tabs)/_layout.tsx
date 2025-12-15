@@ -1,59 +1,72 @@
-import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import { Tabs } from 'expo-router';
+import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
-
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
+import { useTranslation } from '@/providers/LocalizationProvider';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { t } = useTranslation();
+  const glassAvailable = isLiquidGlassAvailable() && Platform.OS === 'ios';
+
+  const glassBackground = () => (
+    <GlassView blurTint="systemChromeMaterialDark" intensity={70} style={StyleSheet.absoluteFill}>
+      <View style={styles.barOverlay} />
+    </GlassView>
+  );
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
+        tabBarActiveTintColor: Colors.light.tint,
+        tabBarInactiveTintColor: Colors.light.tabIconDefault,
+        tabBarStyle: [styles.tabBar, !glassAvailable && styles.tabBarFallback],
+        headerShown: false,
+        tabBarBackground: glassAvailable ? glassBackground : undefined,
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
+          title: t('tabCalculator'),
+          tabBarLabel: t('tabCalculator'),
+          tabBarIcon: ({ color, focused }) => (
+            <Feather name={focused ? 'pie-chart' : 'pie-chart'} size={22} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="tips"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: t('tabTips'),
+          tabBarLabel: t('tabTips'),
+          tabBarIcon: ({ color }) => <Feather name="wind" size={22} color={color} />,
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBar: {
+    position: 'absolute',
+    left: 16,
+    right: 16,
+    bottom: 16,
+    borderRadius: 22,
+    paddingHorizontal: 6,
+    paddingVertical: 8,
+    backgroundColor: 'transparent',
+    borderColor: Colors.light.glassStroke,
+    borderWidth: 1,
+  },
+  barOverlay: {
+    flex: 1,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: Colors.light.glassStroke,
+  },
+  tabBarFallback: {
+    backgroundColor: Colors.light.card,
+  },
+});
