@@ -7,6 +7,8 @@
 - [x] Přidat podporu expo glass efektu (`expo-glass-effect`, případně `expo-linear-gradient`) pro karty/tabs.
 - [x] Vyčistit defaultní expo router šablonu (placeholder stránky, barvy, SpaceMono).
 - [x] Nastavit globální typografii (heading/body scale, letter-spacing) a použít Airbnb-like styl.
+- [ ] Oprav safe area view
+- [ ] Odeber minikalkulačku. nedává to smysl
 
 ## Navigace
 
@@ -35,9 +37,9 @@
 - [x] Přidat mini-kalkulačku/připomínky (např. teplota vody, doba fermentace) – optional.
 - [x] Přidat tlačítko „Reset kalkulačky“ a „Sdílet recept“.
 - [x] Přidat možnost uložit si recept, přidat novou záložku, kde budou uložené recepty.
-- [ ] Ukládání receptu by mělo mít možnost recept pojmenovat
-- [ ] V INFO.md jsou nějaké další texty a info. Přidáme to do Tipů
-- [ ] Udělej variabilní i hydratci (v procentech)
+- [x] Ukládání receptu by mělo mít možnost recept pojmenovat
+- [x] V INFO.md jsou nějaké další texty a info. Přidáme to do Tipů
+- [x] Udělej variabilní i hydratci (v procentech)
 
 ## Nastavení / další
 

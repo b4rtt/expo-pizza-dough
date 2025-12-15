@@ -20,6 +20,7 @@ export type PizzaInput = {
   number: number;
   gramsPerPizza: number;
   yeastType: YeastType;
+  waterShare?: number;
 };
 
 export type PizzaResult = PizzaInput & {
@@ -134,8 +135,10 @@ export function calculatePizza(input: PizzaInput): PizzaResult {
     number: input.number || recipe.number,
     gramsPerPizza: input.gramsPerPizza || recipe.gramsPerPizza,
     yeastType: input.yeastType || recipe.yeastType,
+    waterShare: input.waterShare ?? recipe.waterShare,
   };
 
+  const hydration = Math.max(45, Math.min(90, merged.waterShare ?? recipe.waterShare));
   const total = totalWeight(merged);
   const salt = roundFirstDecimal(total * recipe.saltPercentage);
   const yeast = roundFirstDecimal(total * recipe.yeast[merged.yeastType]);
@@ -143,8 +146,8 @@ export function calculatePizza(input: PizzaInput): PizzaResult {
   const sugar = recipe.sugarPercentage ? roundFirstDecimal(total * recipe.sugarPercentage) : undefined;
 
   const net = computeNetWeight({ total, salt, yeast, oil, sugar });
-  const flourWithSemolina = flourGramsAll(net, recipe.waterShare);
-  const water = waterGrams(recipe.waterShare, flourWithSemolina);
+  const flourWithSemolina = flourGramsAll(net, hydration);
+  const water = waterGrams(hydration, flourWithSemolina);
   const semolina = recipe.semolinaPercentage
     ? Math.round(recipe.semolinaPercentage * flourWithSemolina)
     : undefined;
@@ -161,7 +164,7 @@ export function calculatePizza(input: PizzaInput): PizzaResult {
     sugar,
     semolina,
     totalWeight: total,
-    hydration: recipe.waterShare,
+    hydration,
   };
 }
 

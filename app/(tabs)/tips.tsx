@@ -13,6 +13,7 @@ import { Typography } from "@/components/Typography";
 import { FORM_STORAGE_KEY, calculatePizza, defaultPizzaInput } from "@/lib/pizzaCalculator";
 import { useTranslation } from "@/providers/LocalizationProvider";
 import { useThemeColors } from "@/providers/ThemeProvider";
+import infoSections from "@/constants/infoText";
 
 export default function TipsScreen() {
   const { t } = useTranslation();
@@ -149,6 +150,18 @@ export default function TipsScreen() {
           </View>
         </GlassCard>
 
+        <GlassCard style={{ marginTop: spacing.lg }}>
+          <Typography variant="title">INFO.md</Typography>
+          {infoSections.map((section) => (
+            <View key={section.title} style={styles.infoBlock}>
+              <Typography variant="subtitle">{section.title}</Typography>
+              <Typography variant="body" color={colors.muted}>
+                {section.body}
+              </Typography>
+            </View>
+          ))}
+        </GlassCard>
+
         <View style={{ height: 120 }} />
       </ScrollView>
     </ScreenBackground>
@@ -195,6 +208,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  infoBlock: {
+    marginTop: spacing.lg,
+    gap: spacing.sm,
   },
 });
 

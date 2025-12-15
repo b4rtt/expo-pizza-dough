@@ -30,6 +30,8 @@ type FormState = {
   yeastType: YeastType;
   number: string;
   gramsPerPizza: string;
+  hydration: string;
+  saveName: string;
 };
 
 const styleOptions: PizzaStyle[] = ['neapolitan', 'new-york', 'sicilian', 'pan'];
@@ -44,6 +46,8 @@ export default function CalculatorScreen() {
     yeastType: defaultPizzaInput.yeastType,
     number: String(defaultPizzaInput.number),
     gramsPerPizza: String(defaultPizzaInput.gramsPerPizza),
+    hydration: String(recipeDefaults[defaultPizzaInput.style].waterShare),
+    saveName: '',
   });
   const [hydrated, setHydrated] = useState(false);
 
@@ -70,7 +74,18 @@ export default function CalculatorScreen() {
               parsed.gramsPerPizza && /^\d+$/.test(parsed.gramsPerPizza)
                 ? parsed.gramsPerPizza
                 : `${defaultPizzaInput.gramsPerPizza}`;
-            setForm({ style, yeastType, number, gramsPerPizza });
+            const hydration =
+              parsed.hydration && /^\d+$/.test(parsed.hydration)
+                ? parsed.hydration
+                : `${recipeDefaults[style].waterShare}`;
+            setForm({
+              style,
+              yeastType,
+              number,
+              gramsPerPizza,
+              hydration,
+              saveName: parsed.saveName ?? '',
+            });
           } catch (_) {
             // ignore hydration errors
           } finally {
@@ -93,6 +108,7 @@ export default function CalculatorScreen() {
     yeastType: form.yeastType,
     number: Math.max(1, parseInt(form.number || '0', 10) || 0),
     gramsPerPizza: Math.max(1, parseInt(form.gramsPerPizza || '0', 10) || 0),
+    waterShare: Math.max(45, Math.min(90, parseInt(form.hydration || '0', 10) || recipeDefaults[form.style].waterShare)),
   };
 
   const result = useMemo(() => calculatePizza(parsed), [parsed]);
@@ -146,6 +162,7 @@ export default function CalculatorScreen() {
       number: String(defaults.number),
       gramsPerPizza: String(defaults.gramsPerPizza),
       yeastType: defaults.yeastType,
+      hydration: String(defaults.waterShare),
     }));
   };
 
@@ -159,7 +176,9 @@ export default function CalculatorScreen() {
     const payload = calculatePizza(parsed);
     const entry = {
       id: `${Date.now()}`,
-      title: `${t(`style_${payload.style.replace('-', '_')}`)} • ${parsed.number}×${parsed.gramsPerPizza}g`,
+      title:
+        form.saveName.trim() ||
+        `${t(`style_${payload.style.replace('-', '_')}`)} • ${parsed.number}×${parsed.gramsPerPizza}g`,
       createdAt: Date.now(),
       result: payload,
     };
@@ -273,6 +292,32 @@ export default function CalculatorScreen() {
                 onChangeText={(text) =>
                   setForm((prev) => ({ ...prev, gramsPerPizza: text.replace(/\D/g, '') }))
                 }
+              />
+            </View>
+          </View>
+
+          <View style={[styles.row, { marginTop: spacing.sm }]}>
+            <View style={{ flex: 1 }}>
+              <Field
+                keyboardType="number-pad"
+                label={t('hydrationInput')}
+                suffix="%"
+                value={form.hydration}
+                onChangeText={(text) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    hydration: text.replace(/\D/g, '').slice(0, 2),
+                  }))
+                }
+                helper="45-90%"
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Field
+                label={t('recipeName')}
+                value={form.saveName}
+                onChangeText={(text) => setForm((prev) => ({ ...prev, saveName: text }))}
+                placeholder={t(`style_${form.style.replace('-', '_')}`)}
               />
             </View>
           </View>
