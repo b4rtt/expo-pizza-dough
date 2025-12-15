@@ -318,7 +318,7 @@ export default function CalculatorScreen() {
           <FieldButton
             label={t("styleLabel")}
             value={t(`style_${form.style.replace("-", "_")}`)}
-            icon="pizza"
+            icon="disc"
             onPress={() => setSheet("style")}
           />
 
@@ -566,7 +566,7 @@ export default function CalculatorScreen() {
                 : value === "sicilian"
                   ? "Plech, křupavý spodek v oleji"
                   : "Nadýchaný střed, olej",
-          icon: "pizza",
+          icon: "disc",
         }))}
         onSelect={async (key) => {
           await Haptics.selectionAsync();

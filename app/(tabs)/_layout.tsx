@@ -18,28 +18,28 @@ export default function TabLayout() {
     <NativeTabs
       disableTransparentOnScrollEdge
       tintColor={colors.tint}
-      labelStyle={{ color: Platform.OS === "ios" ? undefined : colors.muted }}
+      labelStyle={{ color: Platform.OS === "ios" ? undefined : colors.text }}
     >
       <NativeTabs.Trigger name="index">
         {Platform.select({
           ios: (
             <Icon sf={{ default: "chart.bar", selected: "chart.bar.fill" }} />
           ),
-          default: <VectorIcon family={Ionicons} name="calculator-outline" />,
+          default: <VectorIcon family={Ionicons} name="calculator" />,
         })}
         <Label>{t("tabCalculator")}</Label>
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="tips">
         {Platform.select({
           ios: <Icon sf={{ default: "sparkles", selected: "sparkles" }} />,
-          default: <VectorIcon family={Ionicons} name="bulb-outline" />,
+          default: <VectorIcon family={Ionicons} name="bulb" />,
         })}
         <Label>{t("tabTips")}</Label>
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="recipes">
         {Platform.select({
           ios: <Icon sf={{ default: "bookmark", selected: "bookmark.fill" }} />,
-          default: <VectorIcon family={Ionicons} name="bookmark-outline" />,
+          default: <VectorIcon family={Ionicons} name="bookmark" />,
         })}
         <Label>{t("savedRecipes")}</Label>
       </NativeTabs.Trigger>
