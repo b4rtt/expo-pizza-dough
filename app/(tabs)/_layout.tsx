@@ -1,118 +1,33 @@
-import { Ionicons } from "@expo/vector-icons";
-import { GlassView, isLiquidGlassAvailable } from "expo-glass-effect";
-import { Tabs } from "expo-router";
-import { useEffect, useRef } from "react";
-import { Animated, Platform, StyleSheet, View } from "react-native";
+import { Platform } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { NativeTabs, Icon, Label, VectorIcon } from 'expo-router/unstable-native-tabs';
 
-import Colors from "@/constants/Colors";
-import { useTranslation } from "@/providers/LocalizationProvider";
+import Colors from '@/constants/Colors';
+import { useTranslation } from '@/providers/LocalizationProvider';
 
 export default function TabLayout() {
   const { t } = useTranslation();
-  const glassAvailable = isLiquidGlassAvailable() && Platform.OS === "ios";
-
-  const glassBackground = () => (
-    <GlassView
-      glassEffectStyle="regular"
-      tintColor="rgba(0,0,0,0.25)"
-      style={StyleSheet.absoluteFill}
-    >
-      <View style={styles.barOverlay} />
-    </GlassView>
-  );
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors.light.tint,
-        tabBarInactiveTintColor: Colors.light.tabIconDefault,
-        tabBarStyle: [styles.tabBar, !glassAvailable && styles.tabBarFallback],
-        headerShown: false,
-        tabBarBackground: glassAvailable ? glassBackground : undefined,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: t("tabCalculator"),
-          tabBarLabel: t("tabCalculator"),
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon
-              color={color}
-              focused={focused}
-              activeName="calculator"
-              inactiveName="calculator-outline"
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="tips"
-        options={{
-          title: t("tabTips"),
-          tabBarLabel: t("tabTips"),
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon
-              color={color}
-              focused={focused}
-              activeName="bulb"
-              inactiveName="bulb-outline"
-            />
-          ),
-        }}
-      />
-    </Tabs>
+    <NativeTabs
+      disableTransparentOnScrollEdge
+      appearance={Platform.OS === 'ios' ? 'glass' : 'floating'}
+      tintColor={Platform.OS === 'ios' ? undefined : Colors.light.tint}
+      labelStyle={{ color: Platform.OS === 'ios' ? undefined : Colors.light.muted }}>
+      <NativeTabs.Trigger name="index">
+        {Platform.select({
+          ios: <Icon sf={{ default: 'chart.bar', selected: 'chart.bar.fill' }} />,
+          default: <VectorIcon family={Ionicons} name="calculator-outline" />,
+        })}
+        <Label>{t('tabCalculator')}</Label>
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="tips">
+        {Platform.select({
+          ios: <Icon sf={{ default: 'sparkles', selected: 'sparkles' }} />,
+          default: <VectorIcon family={Ionicons} name="bulb-outline" />,
+        })}
+        <Label>{t('tabTips')}</Label>
+      </NativeTabs.Trigger>
+    </NativeTabs>
   );
 }
-
-type TabIconProps = {
-  color: string;
-  focused: boolean;
-  activeName: keyof typeof Ionicons.glyphMap;
-  inactiveName: keyof typeof Ionicons.glyphMap;
-};
-
-function TabIcon({ color, focused, activeName, inactiveName }: TabIconProps) {
-  const scale = useRef(new Animated.Value(focused ? 1.05 : 0.95)).current;
-
-  useEffect(() => {
-    Animated.spring(scale, {
-      toValue: focused ? 1.05 : 0.95,
-      useNativeDriver: true,
-      friction: 9,
-      tension: 120,
-    }).start();
-  }, [focused, scale]);
-
-  const name = focused ? activeName : inactiveName;
-
-  return (
-    <Animated.View style={{ transform: [{ scale }] }}>
-      <Ionicons name={name} size={24} color={color} />
-    </Animated.View>
-  );
-}
-
-const styles = StyleSheet.create({
-  tabBar: {
-    position: "absolute",
-    left: 16,
-    right: 16,
-    bottom: 16,
-    borderRadius: 22,
-    paddingHorizontal: 6,
-    paddingVertical: 8,
-    backgroundColor: "transparent",
-    borderColor: Colors.light.glassStroke,
-    borderWidth: 1,
-  },
-  barOverlay: {
-    flex: 1,
-    borderRadius: 22,
-    borderWidth: 1,
-    borderColor: Colors.light.glassStroke,
-  },
-  tabBarFallback: {
-    backgroundColor: Colors.light.card,
-  },
-});
